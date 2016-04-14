@@ -14,7 +14,7 @@ public class Perceptron {
     fire = false;
   }
   public boolean activationFunction(){
-    int sum;
+    int sum=0;
     for(Map.Entry<Perceptron, double> entry : inputs_and_weights){
       if(entry.key().checkFire()){
         sum+=entry.value();
