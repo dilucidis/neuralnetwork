@@ -1,11 +1,12 @@
 package perceptual_network;
 
 import interfaces.*;
+import neurons.*;
 
 //updateable will only be implemented in the subclasses
 public abstract class Layer implements Updateable{
-	public static int num = 0;
-	private Perceptron[] bank;
+	private static int num = 0;
+	protected Neuron[] bank;
 	
 	public Layer(){
 		num++;
@@ -14,25 +15,36 @@ public abstract class Layer implements Updateable{
 	public Layer(int size){
 		//my new favorite trick
 		this();
-		bank = new Perceptron[size];
+		bank = new Neuron[size];
+	}
+	public Layer(Neuron[] rawLayer){
+		this(rawLayer.length);
+		for(int i = 0; i<rawLayer.length;i++)
+				bank[i]=rawLayer[i];
 	}
 	
-	public Perceptron setPerceptron(Perceptron p, int x){
-		Perceptron old = bank[x];
-		bank[x] = p;
+	public void update(){
+		for(Neuron n: bank)
+			n.update();
+	}
+	public Neuron setNeuron(Neuron n, int x){
+		Neuron old = bank[x];
+		bank[x] = n;
 		return old;
 	}
 	
-	public Perceptron grabAxon(int x){
+	public Neuron[] setNeurons(Neuron[] n){
+		Neuron[] temp = new Neuron[bank.length];
+		for(int i = 0; i < n.length; i++){
+			temp[i]=bank[i];
+			bank[i]=n[i];
+		}
+			return temp;
+		
+	}
+	
+	public Neuron grabAxon(int x){
 		return bank[x];
-	}
-	
-	public void wireAxon(Perceptron p, int y){
-		bank[y].addInput(p);
-	}
-	
-	public void wireAxons(Perceptron[] I, int y){
-		bank[y].addInputs(I);
 	}
 	
 	public static int getNum(){

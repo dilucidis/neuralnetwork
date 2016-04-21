@@ -1,70 +1,59 @@
-package perceptual_network;
+package neurons;
 
 import java.util.HashMap;
 import java.util.Map;
-import interfaces.*;
 
-public class Perceptron implements Updateable{
+public class Perceptron extends Neuron{
 	// if weighted inputs sum to this value, fire
-	public static int num = 0;
+	private static int num = 0;
 	double threshold;
-	private boolean fire;
 	private double defaultWeight = 0.34;
 	private double learningRate = 0.1;
-	HashMap<Perceptron, Double> inputs_and_weights;
 
+	HashMap<Neuron, Double> inputs_and_weights;
+	
 	public Perceptron(){
+		super();
 		threshold= 1.0;
-		inputs_and_weights = new HashMap<Perceptron, Double>();
-		fire = false;
+		inputs_and_weights = new HashMap<Neuron, Double>();
 		num++;
 	}
 	
-	public Perceptron(Perceptron[] inputs) {
+	public Perceptron(Neuron[] inputs) {
 		//for you nerds, what 'this()' does is call the other constructor
 		this();
 		addInputs(inputs);
 	}
 	//copy constructor (pls work)
 	public Perceptron(Perceptron p){
+		super(p);
 		threshold= p.getThreshold();
-		inputs_and_weights=p.getInputsAndWeights();
-		fire = false;
+		inputs_and_weights= new HashMap<Neuron, Double>(p.getInputsAndWeights());
 		num++;
+	}
+
+	public static int getNum(){
+		return num;
 	}
 	
 	public void update() {
-		fire = false;
+		resetFire();
 		int sum = 0;
 		
-		for (Map.Entry<Perceptron, Double> entry : inputs_and_weights.entrySet())
+		for (Map.Entry<Neuron, Double> entry : inputs_and_weights.entrySet())
 			if (entry.getKey().checkFire()) 
 				sum += entry.getValue();
 		
 		if (sum >= threshold)
-			fire = true;
+			super.manualFire(true);
 	}
-
-	public boolean checkFire() {
-		return fire;
-	}
-
-	public boolean resetFire() {
-		return manualFire(false);
-	}
-
-	public boolean manualFire(boolean active) {
-		boolean temp = fire;
-		fire = active;
-		return temp;
-	}
-
-	public void addInput(Perceptron I) {
+	//crucially, addInput does not deep copy I; when I updates, inputs will as well
+	public void addInput(Neuron I) {
 		inputs_and_weights.put(I, defaultWeight);
 	}
 	
-	public void addInputs(Perceptron[] I){
-		for( Perceptron p : I)
+	public void addInputs(Neuron[] I){
+		for( Neuron p : I)
 			addInput(p);
 	}
 	
@@ -92,9 +81,8 @@ public class Perceptron implements Updateable{
 		return temp;
 	}
 	
-	public HashMap<Perceptron, Double> getInputsAndWeights(){
+	public HashMap<Neuron, Double> getInputsAndWeights(){
 		return inputs_and_weights;
 	}
-
 	
 }
