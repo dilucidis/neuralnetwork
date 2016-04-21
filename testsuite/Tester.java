@@ -56,7 +56,7 @@ public class Tester {
 	public static void main(String[] args) {
 	//testNeurons();
 	//testInputNeurons();
-	testLayers();
+	//testLayers();
 	}
 
 }
