@@ -9,13 +9,15 @@ public class Perceptron extends Neuron{
 	double threshold;
 	private double defaultWeight = 0.34;
 	private double learningRate = 0.1;
-
+	
 	HashMap<Neuron, Double> inputs_and_weights;
+	HashMap<Neuron, Double> best_weights;
 	
 	public Perceptron(){
 		super();
 		threshold= 1.0;
 		inputs_and_weights = new HashMap<Neuron, Double>();
+		best_weights = new HashMap<Neuron, Double>();
 		num++;
 	}
 	
@@ -29,6 +31,7 @@ public class Perceptron extends Neuron{
 		super(p);
 		threshold= p.getThreshold();
 		inputs_and_weights= new HashMap<Neuron, Double>(p.getInputsAndWeights());
+		best_weights =  new HashMap<Neuron, Double>(p.getBestWeights());
 		num++;
 	}
 
@@ -50,6 +53,7 @@ public class Perceptron extends Neuron{
 	//crucially, addInput does not deep copy I; when I updates, inputs will as well
 	public void addInput(Neuron I) {
 		inputs_and_weights.put(I, defaultWeight);
+		best_weights.put(I, defaultWeight);
 	}
 	
 	public void addInputs(Neuron[] I){
@@ -83,6 +87,10 @@ public class Perceptron extends Neuron{
 	
 	public HashMap<Neuron, Double> getInputsAndWeights(){
 		return inputs_and_weights;
+	}
+	
+	public HashMap<Neuron, Double> getBestWeights(){
+		return best_weights;
 	}
 	
 }
