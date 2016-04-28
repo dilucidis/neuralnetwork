@@ -44,7 +44,7 @@ public class Tester {
 	}
 	
 	private static void testLayers(){
-			Layer l = new InputLayer();
+			Layer l = new InputLayer(5);
 			Layer[] layers = new Layer[5];
 			for (int i = 0; i<layers.length;i++)
 				layers[i] = new InnerLayer();

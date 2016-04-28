@@ -1,13 +1,18 @@
 package perceptual_network;
 
+import neurons.*;
+
 public class InputLayer extends Layer {
-	public InputLayer() {
-		// TODO Auto-generated constructor stub
-	}
+	private boolean[] currentDataSet;
 
 	public InputLayer(int size) {
 		super(size);
-		// TODO Auto-generated constructor stub
+		currentDataSet= new boolean[size];
+		for (int i = 0; i<size; i++){
+			super.bank[i] =  new InputNeuron(i);
+		}
 	}
+	
+	
 
 }

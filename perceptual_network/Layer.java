@@ -3,7 +3,7 @@ package perceptual_network;
 import interfaces.*;
 import neurons.*;
 
-//updateable will only be implemented in the subclasses
+//updateable simply calls update on each neuron (layer type independent, which is nice)
 public abstract class Layer implements Updateable{
 	private static int num = 0;
 	protected Neuron[] bank;
