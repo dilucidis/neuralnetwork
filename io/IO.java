@@ -27,4 +27,8 @@ public class IO {
 	public boolean getInputValue(int x){
 		return this.input[x];
 	}
+	
+	public boolean getOutputValue(int y){
+		return this.input[y];
+	}
 }
