@@ -1,5 +1,6 @@
 package testsuite;
 
+import io.IO;
 import perceptual_network.*;
 import neurons.*;
 
@@ -53,10 +54,18 @@ public class Tester {
 			System.out.println("dank");
 		
 	}
+	
+	private static void testIO(){
+		IO test = new IO(new boolean[3],new boolean[3]);
+		for(int i = 0; i < 3; i++)
+			System.out.println(test.getInputValue(i));
+	}
+	
 	public static void main(String[] args) {
 	//testNeurons();
 	//testInputNeurons();
 	//testLayers();
+	  testIO();
 	}
 
 }

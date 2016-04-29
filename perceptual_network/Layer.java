@@ -40,7 +40,6 @@ public abstract class Layer implements Updateable{
 			bank[i]=n[i];
 		}
 			return temp;
-		
 	}
 	
 	public Neuron grabAxon(int x){
