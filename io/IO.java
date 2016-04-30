@@ -1,8 +1,10 @@
 package io;
 
 public class IO {
+	//TODO consider replacing boolean arrays with something more compact
 	private boolean[] input;
 	private boolean[] output;
+	private boolean outputGiven = false;
 	
 	public IO(int inputSize, int outputSize) {
 		this.input = new boolean[inputSize];
@@ -15,20 +17,30 @@ public class IO {
 		setOutput(output);
 	}
 	
+	public IO(boolean[] input, int outputSize){
+		this(input.length, outputSize);
+		setInput(input);
+	}
+	//private because all IO pairs start with an unchanging input
 	private void setInput(boolean[] input){
 		for(int i = 0; i < input.length; i++)
 			this.input[i]=input[i];
 	}
-	
-	private void setOutput(boolean[] output){
+	//public for the non-training IO pairs, where the network produces the output
+	public void setOutput(boolean[] output){
 		for(int i = 0; i < output.length; i++)
 			this.output[i]=output[i];
+		outputGiven = true;
 	}
+	
 	public boolean getInputValue(int x){
 		return this.input[x];
 	}
 	
 	public boolean getOutputValue(int y){
-		return this.input[y];
+		if(outputGiven)
+			return this.output[y];
+		else
+			return this.output[output.length];
 	}
 }
