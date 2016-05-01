@@ -4,48 +4,48 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Perceptron extends Neuron{
+	private static int num = 0; //running count of perceptrons
 	// if weighted inputs sum to this value, fire
-	private static int num = 0;
 	double threshold;
-	private double defaultWeight = 0.34;
+	private double defaultWeight = 0.34; //TODO randomize initial weights
 	private double learningRate = 0.1;
 	
-	HashMap<Neuron, Double> inputs_and_weights;
-	HashMap<Neuron, Double> best_weights;
+	HashMap<Neuron, Double> inputs_and_weights; //the neuronal input and the weight values 
+	HashMap<Neuron, Double> best_weights; //learning is in progress, this is for the least error function
 	
 	public Perceptron(){
 		super();
-		threshold= 1.0;
+		threshold= 1.0; //TODO support other thresholds?
 		inputs_and_weights = new HashMap<Neuron, Double>();
 		best_weights = new HashMap<Neuron, Double>();
 		num++;
 	}
 	
 	public Perceptron(Neuron[] inputs) {
-		this();
-		addInputs(inputs);
+		this(); //call the other constructor
+		addInputs(inputs); //finish initialization with wiring of the inputs
 	}
-
+	//perceptron copy constructor (for deep copy capability)
 	public Perceptron(Perceptron p){
-		super(p);
-		threshold= p.getThreshold();
-		inputs_and_weights= new HashMap<Neuron, Double>(p.getInputsAndWeights());
+		super(p); //call the copy constructor in class Neuron 
+		threshold= p.getThreshold(); //finish the perceptron only business
+		inputs_and_weights= new HashMap<Neuron, Double>(p.getInputsAndWeights()); //deep copy of hashmap
 		best_weights =  new HashMap<Neuron, Double>(p.getBestWeights());
 		num++;
 	}
-
+	//static method for perceptron pop. count
 	public static int getNum(){
 		return num;
 	}
-	
+	//update is the sum function which determines neuronal activity (fire or not fire)
 	public void update() {
 		resetFire();
 		int sum = 0;
-		
+		//summation of input neuron fire value*weight
 		for (Map.Entry<Neuron, Double> entry : inputs_and_weights.entrySet())
 			if (entry.getKey().checkFire()) 
 				sum += entry.getValue();
-		
+		//compare sum to threshold, if it exceeds, fire. Else, keep the default
 		if (sum >= threshold)
 			super.manualFire(true);
 	}
