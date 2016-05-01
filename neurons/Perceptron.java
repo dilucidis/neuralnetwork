@@ -22,11 +22,10 @@ public class Perceptron extends Neuron{
 	}
 	
 	public Perceptron(Neuron[] inputs) {
-		//for you nerds, what 'this()' does is call the other constructor
 		this();
 		addInputs(inputs);
 	}
-	//copy constructor (pls work)
+
 	public Perceptron(Perceptron p){
 		super(p);
 		threshold= p.getThreshold();
