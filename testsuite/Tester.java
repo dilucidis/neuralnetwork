@@ -61,11 +61,16 @@ public class Tester {
 			System.out.println(test.getInputValue(i));
 	}
 	
+	private static void testData(){
+		Data test = new Data(new String(datatext.txt));
+		test.getNextInput();
+	}
 	public static void main(String[] args) {
 	//testNeurons();
 	//testInputNeurons();
 	//testLayers();
-	  testIO();
+	//testIO();
+	  testData();
 	}
 
 }
