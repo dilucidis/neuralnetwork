@@ -74,6 +74,18 @@ public class Tester {
 	//testLayers();
 	//testIO();
 	  testData();
+	  
+	  System.out.println("Testing full functionality: ");
+	  Neuron[] raw;
+	  Data ANDFunctionTestData= new Data(new String(datatext.txt));
+	  raw = new Neuron[3];
+	  for(int i = 0; i<raw.length;i++)
+	  	raw[i] = new InputNeuron(i);
+	  InputLayer in = new InputLayer(raw);
+	  in.hookToDataset(ANDFunctionTestData.nextDataset());
+	  
+	  
+	  
 	}
 
 }
