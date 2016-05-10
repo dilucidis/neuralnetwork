@@ -4,34 +4,39 @@ import interfaces.*;
 
 public abstract class Neuron implements Updateable{
 	private static int num = 0;
-	private boolean fire;
+	private float fireValue;
+	private ActivationFunction f;
 
 	public Neuron() {
 		num++;
-		fire = false;
+		this.fireValue = 0.0;
 	}
 	
 	public Neuron(Neuron n){
 		this();
-		fire = n.checkFire();
+		this.fireValue = n.checkFire();
+	}
+	public Neuron(ActivationFunction f){
+		this.f=ActivationFunction(f);
 	}
 	
 	public static int getNum(){
 		return num;
 	}
-	
-	public boolean checkFire() {
-		return fire;
+	public void fire(){
+		
+	}
+	public float checkFire() {
+		return this.fireValue;
 	}
 
-	public boolean resetFire() {
-		return manualFire(false);
+	public float resetFire() {
+		return manualFire(0);
 	}
 
-	public boolean manualFire(boolean active) {
-		boolean temp = fire;
-		fire = active;
+	public float manualFire(float active) {
+		float temp = this.fireValue;
+		this.fireValue = active;
 		return temp;
 	}
-
 }
