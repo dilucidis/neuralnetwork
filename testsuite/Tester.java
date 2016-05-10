@@ -1,5 +1,8 @@
 package testsuite;
 
+import java.io.File;
+
+import data.Data;
 import io.IO;
 import perceptual_network.*;
 import neurons.*;
@@ -62,8 +65,8 @@ public class Tester {
 	}
 	
 	private static void testData(){
-		Data test = new Data(new String(datatext.txt));
-		test.getNextInput();
+		Data test = new Data(new File("datatext.txt"));
+		test.nextDataSet();
 	}
 	public static void main(String[] args) {
 	//testNeurons();

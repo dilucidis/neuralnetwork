@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public abstract class Data {
+public class Data {
 	protected Scanner sc;
 	protected IO[] cases;
 	public int currentCaseNumber = 0;
