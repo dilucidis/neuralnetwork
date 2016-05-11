@@ -1,3 +1,2 @@
 # neuralnetwork
-implemented to solve tictactoe.
-http://neverstopbuilding.com/minimax
+implemented to solve tic-tac-toe.
