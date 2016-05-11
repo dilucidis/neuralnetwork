@@ -1,6 +1,6 @@
 # README
-How to make use Generator
--------------------------
+How to generate output
+----------------------
 1) Place all input cases as 18-digit binary numbers on single lines in "in.txt" on the next empty line.
 2) Run DataProcessor.java
 3) CTRL+X the contents of "in.txt" (except "in") to the end of "inDB.txt"
