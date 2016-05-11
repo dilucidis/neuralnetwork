@@ -1,7 +1,7 @@
 # README
 How to generate output
 ----------------------
-1) Place all input cases as 18-digit binary numbers on single lines in "in.txt" on the next empty line.
+1) Place all input cases as 18-digit binary numbers on individual lines at the end of "in.txt".
 
 2) Run DataProcessor.java
 
