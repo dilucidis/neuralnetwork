@@ -13,4 +13,4 @@ How to convert from text to IO
 ------------------------------
 1) IOConverter converter = new IOConverter("inDB.txt","outDB.txt");
 
-2) converter.get() -> returns IO[]
+2) converter.get() → returns IO[]
