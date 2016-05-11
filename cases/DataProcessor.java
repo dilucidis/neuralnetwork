@@ -28,7 +28,7 @@ public class DataProcessor {
 		try {
 			fr=new FileReader(in);
 			br=new BufferedReader(fr);
-			while((line=br.readLine())!=null){
+			while((line=br.readLine())!=null&&!(line=br.readLine()).equals("in")){
 				gen=new Generator(line);
 				write(gen.getOut());
 			}
