@@ -46,14 +46,11 @@ public class IOConverter {
 	private void convert(String inLine2, String outLine2, int index) {
 		input=new boolean[inLine2.length()];
 		output=new boolean[outLine2.length()];
-		setBoolArr(input, inLine2);
-		setBoolArr(output, outLine2);
+		for (int i=0;i<inLine2.length();i++)
+			input[i]=(Integer.parseInt(""+inLine2.charAt(i))!=0);
+		for (int i=0;i<outLine2.length();i++)
+			output[i]=(Integer.parseInt(""+outLine2.charAt(i))!=0);
 		ioList[index]=new IO(input, output);
-	}
-
-	private void setBoolArr(boolean[] arr, String str) {
-		for (int i=0;i<str.length();i++)
-			arr[i]=(Integer.parseInt(""+str.charAt(i))!=0);
 	}
 	
 	public IO[] get(){
