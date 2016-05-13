@@ -1,7 +1,7 @@
 package cases;
 import java.io.*;
 public class DataProcessor {
-	private static File out=new File("out.txt");
+	private static File out=new File("outDB.txt");
 	private static FileWriter fw;
 	private static BufferedWriter bw;
 	
@@ -20,15 +20,20 @@ public class DataProcessor {
 
 	public static void main(String[] args) {
 		File in=new File("in.txt");
-		FileReader fr; 
-		BufferedReader br; 
+		File db=new File("inDB.txt");
+		FileReader fr; FileWriter w;
+		BufferedReader br; BufferedWriter b;
 		String line;
 		Generator gen;
 		
 		try {
 			fr=new FileReader(in);
 			br=new BufferedReader(fr);
-			while((line=br.readLine())!=null&&!(line=br.readLine()).equals("in")){
+			f=new FileWriter(db);
+			b=new BufferedWriter(f);
+			while((line=br.readLine())!=null){
+				b.write(line);
+				b.newLine();
 				gen=new Generator(line);
 				write(gen.getOut());
 			}
