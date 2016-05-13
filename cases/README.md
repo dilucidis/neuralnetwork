@@ -1,13 +1,11 @@
 # README
 How to generate output
 ----------------------
-1) Place all input cases as 18-digit binary numbers on individual lines at the end of "in.txt".
+1) Place all input cases as 18-digit binary numbers on individual lines in "in.txt" (replace existing data).
 
 2) Run DataProcessor.java
 
-3) CTRL+X the contents of "in.txt" (except "in") to the end of "inDB.txt"
-
-4) CTRL+X the contents of "out.txt" (except "out") to the end of "outDB.txt"
+3) New input/output cases will be added to the ends of "inDB.txt" and "outDB.txt"
 
 How to convert from text to IO
 ------------------------------
