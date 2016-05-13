@@ -31,7 +31,7 @@ public class IOConverter {
 			br1=new BufferedReader(fr1);
 			fr2=new FileReader(out);
 			br2=new BufferedReader(fr2);
-			for(int i=0;(inLine=br1.readLine())!=null||(outLine=br2.readLine())!=null&&!(outLine=br2.readLine()).equals("out");i++){
+			for(int i=0;(inLine=br1.readLine())!=null||(outLine=br2.readLine())!=null;i++){
 				convert(inLine,outLine,i);
 			}
 			br1.close(); br2.close();
