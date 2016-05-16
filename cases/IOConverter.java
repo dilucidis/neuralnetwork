@@ -16,7 +16,7 @@ public class IOConverter {
 	private BufferedReader br1,br2;
 	private String inLine,outLine;
 	private IO[] ioList;
-	private boolean[] input,output;
+	private float[] input,output;
 	private LineNumberReader lnr;
 	
 	public IOConverter(String inLoc, String outLoc) throws IOException {
