@@ -44,12 +44,12 @@ public class IOConverter {
 	}
 
 	private void convert(String inLine2, String outLine2, int index) {
-		input=new boolean[inLine2.length()];
-		output=new boolean[outLine2.length()];
+		input=new float[inLine2.length()];
+		output=new float[outLine2.length()];
 		for (int i=0;i<inLine2.length();i++)
-			input[i]=(Integer.parseInt(""+inLine2.charAt(i))!=0);
+			input[i]=Float.parseFloat(""+inLine2.charAt(i));
 		for (int i=0;i<outLine2.length();i++)
-			output[i]=(Integer.parseInt(""+outLine2.charAt(i))!=0);
+			output[i]=Float.parseFloat(""+outLine2.charAt(i));
 		ioList[index]=new IO(input, output);
 	}
 	
