@@ -1,34 +1,67 @@
 //http://web.cs.ucla.edu/~rosen/161/notes/alphabeta.html
-//X is TRUE
+//1 is AI
 package cases;
 
 import java.awt.Point;
+import java.util.Arrays;
 
 public class Generator {
-	private String out;
+	private String out, in;
 	private Point[] board;
+	private int index, score;
 	
 	public Generator(String in){
+		this.in=in;
 		for (int i=0;i<in.length()/2;i++){
 			board[i]=new Point(Integer.parseInt(""+in.charAt(2*i)), Integer.parseInt(""+in.charAt(2*i+1))); //pairs booleans
 		}
-		
-		minimax(board, true, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+		score=-10;
+		minimax(board, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
-	private int minimax(Point[] input, boolean isMax, int depth, int alpha, int beta) {
-		if(isWin()==1)
-			return depth-10;
-		else if(isWin()==-1)
-			return -10;
-		
-		for (int i=0; i<input.length; i++){ //loop through each square
-			if (input[i].x==0){ //if square is empty
-				
-			}
+	private int minimax(Point[] input, int depth, int alpha, int beta) {
+		boolean isMax;
+		Point[] temp;
+		if(depth%2==0){ //is it a maximizing or minimizing node
+			isMax=true;
+		}else{
+			isMax=false;
 		}
 		
-		return alpha;
+		while(alpha>=beta){
+			if(isWin()==1) //returns score if a player wins
+				if (isMax) alpha=depth-10;
+				else beta=depth-10;
+			else if(isWin()==-1)
+				if (isMax) alpha=-10;
+				else beta=-10;
+			
+			//else
+			for (int i=0; i<input.length; i++){ //loop through each square
+				if (input[i].x==0){ //if square is empty
+					 temp=Arrays.copyOf(input, input.length);
+					 temp[i].x=1;
+					 if (isMax){
+						 temp[i].y=1;
+						 alpha=minimax(temp, depth+1, alpha, beta);
+						 if (alpha>score&&alpha<0){
+							score=Integer.valueOf(alpha);
+							index=Integer.valueOf(i);
+						 }
+					 }else{
+						 temp[i].y=0;
+						 beta=minimax(temp, depth+1, alpha, beta);
+						 if (beta>score&&beta<0){
+							score=Integer.valueOf(beta);
+							index=Integer.valueOf(i);
+						 }
+					 }
+				}
+			}
+		}
+			
+		if(isMax) return alpha;
+		else return beta;
 	}
 	
 	private int isWin(){
@@ -64,6 +97,7 @@ public class Generator {
 	}
 
 	public String getOut(){
+		//not done yet
 		return out;
 	}
 
