@@ -20,7 +20,9 @@ public class Generator {
 	}
 
 	private int minimax(Point[] input, int depth, int alpha, int beta) {
-		boolean isMax;
+		boolean isMax; 
+		int a=Integer.valueOf(alpha);
+		int b=Integer.valueOf(beta);
 		Point[] temp;
 		if(depth%2==0){ //is it a maximizing or minimizing node
 			isMax=true;
@@ -28,13 +30,13 @@ public class Generator {
 			isMax=false;
 		}
 		
-		while(alpha>=beta){
-			if(isWin()==1) //returns score if a player wins
-				if (isMax) alpha=depth-10;
-				else beta=depth-10;
+		while(a>=b){
+			if(isWin()==1) //set score if a player wins
+				if (isMax) a=depth-10;
+				else b=depth-10;
 			else if(isWin()==-1)
-				if (isMax) alpha=-10;
-				else beta=-10;
+				if (isMax) a=-10;
+				else b=-10;
 			
 			//else
 			for (int i=0; i<input.length; i++){ //loop through each square
@@ -43,17 +45,19 @@ public class Generator {
 					 temp[i].x=1;
 					 if (isMax){
 						 temp[i].y=1;
-						 alpha=minimax(temp, depth+1, alpha, beta);
-						 if (alpha>score&&alpha<0){
-							score=Integer.valueOf(alpha);
+						 a=minimax(temp, depth+1, alpha, beta);
+						 if (a>score&&a<0){
+							score=Integer.valueOf(a);
 							index=Integer.valueOf(i);
+							alpha=Integer.valueOf(a);
 						 }
 					 }else{
 						 temp[i].y=0;
-						 beta=minimax(temp, depth+1, alpha, beta);
-						 if (beta>score&&beta<0){
-							score=Integer.valueOf(beta);
+						 b=minimax(temp, depth+1, alpha, beta);
+						 if (b>score&&b<0){
+							score=Integer.valueOf(b);
 							index=Integer.valueOf(i);
+							beta=Integer.valueOf(b);
 						 }
 					 }
 				}
