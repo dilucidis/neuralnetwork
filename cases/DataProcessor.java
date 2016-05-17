@@ -11,7 +11,7 @@ public class DataProcessor {
 			fw=new FileWriter(out, true);
 			bw=new BufferedWriter(fw);
 			pw=new PrintWriter(bw);
-			pw.println(move);
+			pw.print("\n"+move);
 			pw.close();
 			bw.close();
 			fw.close();
@@ -36,7 +36,7 @@ public class DataProcessor {
 			b=new BufferedWriter(w);
 			p=new PrintWriter(b);
 			while((line=br.readLine())!=null){
-				p.println(line);
+				p.print("\n"+line);
 				gen=new Generator(line);
 				write(gen.getOut());
 			}p.close();
