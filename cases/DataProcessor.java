@@ -1,7 +1,7 @@
 package cases;
 import java.io.*;
 public class DataProcessor {
-	private static File out=new File("outDB.txt");
+	private static File out=new File("src/cases/outDB.txt");
 	private static FileWriter fw;
 	private static BufferedWriter bw;
 	private static PrintWriter pw;
@@ -21,8 +21,8 @@ public class DataProcessor {
 	}
 
 	public static void main(String[] args) {
-		File in=new File("in.txt");
-		File db=new File("inDB.txt");
+		File in=new File("src/cases/in.txt");
+		File db=new File("src/cases/inDB.txt");
 		FileReader fr; FileWriter w;
 		BufferedReader br; BufferedWriter b;
 		PrintWriter p;
