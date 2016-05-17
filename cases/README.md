@@ -9,6 +9,6 @@ How to generate output
 
 How to convert from text to IO
 ------------------------------
-1) IOConverter converter = new IOConverter("inDB.txt","outDB.txt")
+1) IOConverter converter = new IOConverter("src/cases/inDB.txt","src/cases/outDB.txt")
 
 2) converter.get() → returns IO[]
