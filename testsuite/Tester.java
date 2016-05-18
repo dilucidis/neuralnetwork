@@ -31,9 +31,10 @@ public class Tester {
 	
 	private static void testNetwork(){
 		Data newData = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\data\\datasets.txt"));
-		Network New = new Network(4, 0, newData);
+		Network New = new Network(4, 4, newData);
 		
 		New.update();
+		New.getReal();
 	}
 	
 	private static void testInputNeurons(){
@@ -74,7 +75,8 @@ public class Tester {
 	private static void testData(){
 		
 		Data test = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\data\\datasets.txt"));
-		
+		IO io = test.nextDataSet();
+		io.getInputValue(0);
 	}
 	private static void testAll(){
 //		  System.out.println("Testing full functionality: ");
@@ -91,7 +93,7 @@ public class Tester {
 	//testInputNeurons();
 	//testLayers();
 	//testIO();
-	//testData();
+	  testData();
 	  testNetwork();
 	  
 	  

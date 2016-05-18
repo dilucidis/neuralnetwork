@@ -26,11 +26,13 @@ public class Network implements Updateable {
 		layers.add(new InputLayer(layerlength, this));
 		for(int i = 1;  i<=numHidden; i++)
 			layers.add(new InnerLayer(layerlength));
+		layers.add(new OutputLayer(layerlength));
 		
 	}
 	public Network(int numHidden, int layerlength, Data data){
-		this();
+		this(numHidden, layerlength);
 		this.data = data;
+		io = new IO(layerlength,1);
 	}
 	
 	public void update() {
@@ -38,7 +40,7 @@ public class Network implements Updateable {
 		out = new boolean[this.layerlength];
 		for( Layer l : layers)
 			l.update();
-		//layers.get(layers.size()-1);
+		
 	}
 	public boolean getInput(int x){
 		return io.getInputValue(x);
@@ -46,5 +48,7 @@ public class Network implements Updateable {
 	public boolean getOutput(int y){
 		return io.getOutputValue(y);
 	}
-	
+	public boolean[] getReal(){
+		return ((OutputLayer) layers.get(layers.size()-1)).output();
+	}
 }
