@@ -18,15 +18,18 @@ public class Data {
 		}
 		int numOfCases = sc.nextInt();
 		cases = new IO[numOfCases];
+		for(int i = 0; i<cases.length;i++){
+			
+		}
+			
 		sc.close();
 		
 	}
 	
 	protected boolean[] parseLine(String line){
-		char[] zos = line.toCharArray();
-		boolean[] set = new boolean[zos.length];
+		boolean[] set = new boolean[line.length()];
 		for(int i = 0; i < line.length();i++)
-			set[i] = (zos[i]=='1');
+			set[i] = (line.substring(i, i+1).equals('1'));
 		return set;
 	}
 	public IO nextDataSet(){
