@@ -15,7 +15,7 @@ public class IOConverter {
 	private BufferedReader br1,br2;
 	private String inLine,outLine;
 	private IO[] ioList;
-	private float[] input,output;
+	private boolean[] input,output;
 	private LineNumberReader lnr;
 	
 	public IOConverter(String inLoc, String outLoc) throws IOException {
@@ -43,12 +43,12 @@ public class IOConverter {
 	}
 
 	private void convert(String inLine2, String outLine2, int index) {
-		input=new float[inLine2.length()];
-		output=new float[outLine2.length()];
+		input=new boolean[inLine2.length()];
+		output=new boolean[outLine2.length()];
 		for (int i=0;i<inLine2.length();i++)
-			input[i]=Float.parseFloat(""+inLine2.charAt(i));
+			input[i]=(Integer.parseInteger(""+inLine2.charAt(i))!=0);
 		for (int i=0;i<outLine2.length();i++)
-			output[i]=Float.parseFloat(""+outLine2.charAt(i));
+			output[i]=(Integer.parseInteger(""+outLine2.charAt(i))!=0);
 		ioList[index]=new IO(input, output);
 	}
 	
