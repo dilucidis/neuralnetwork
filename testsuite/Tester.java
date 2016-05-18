@@ -12,10 +12,9 @@ public class Tester {
 	/**
 	 * @param args
 	 */
-	private static void testNeurons(){
+	private static void testPerceptrons(){
 		Perceptron p = new Perceptron();
 		Perceptron c = new Perceptron(p);
-		Neuron n = new InputNeuron(0);
 		c.setDefaultWeight(1);
 		c.addInput(p);
 		System.out.println("c inputs size: "+c.getInputsAndWeights().size());
@@ -30,16 +29,25 @@ public class Tester {
 		System.out.println("dank");
 	}
 	
+	private static void testNetwork(){
+		Data newData = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\data\\datasets.txt"));
+		Network New = new Network(4, 0, newData);
+		
+		New.update();
+	}
+	
 	private static void testInputNeurons(){
-		boolean[] simpleCase = {true};
-		InputNeuron I = new InputNeuron(0);
-		I.hookToDataset(simpleCase);
+		//shit this all got real complicated real fast
+//		IO simpleCase = new IO(new boolean[]{true},0);
+		
+		Network n = new Network();
+		InputNeuron I = new InputNeuron(0, n);
 		System.out.println(I.checkFire());
 		//this is false, neuron hasn't updated yet and default is false
 		I.update();
 		System.out.println(I.checkFire());
 		//the input neuron's input reads as true, so it fires after updating
-		simpleCase[0] = false;
+//		simpleCase = new IO(new boolean[]{false} ,0);
 		I.update();
 		System.out.println(I.checkFire());
 		//after changing the input array and updating, the neuron is no longer firing
@@ -48,7 +56,6 @@ public class Tester {
 	}
 	
 	private static void testLayers(){
-			Layer l = new InputLayer(5);
 			Layer[] layers = new Layer[5];
 			for (int i = 0; i<layers.length;i++)
 				layers[i] = new InnerLayer();
@@ -65,25 +72,27 @@ public class Tester {
 	}
 	
 	private static void testData(){
-		Data test = new Data(new File("datatext.txt"));
-		test.nextDataSet();
+		
+		Data test = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\data\\datasets.txt"));
+		
+	}
+	private static void testAll(){
+//		  System.out.println("Testing full functionality: ");
+//		  Neuron[] raw;
+//		  Data ANDFunctionTestData= new Data(new String(datatext.txt));
+//		  raw = new Neuron[3];
+//		  for(int i = 0; i<raw.length;i++)
+//		  	raw[i] = new InputNeuron(i);
+//		  InputLayer in = new InputLayer(raw);
+//		  in.hookToDataset(ANDFunctionTestData.nextDataset());
 	}
 	public static void main(String[] args) {
-	//testNeurons();
+	//testPerceptrons();
 	//testInputNeurons();
 	//testLayers();
 	//testIO();
-	  testData();
-	  
-	  System.out.println("Testing full functionality: ");
-	  Neuron[] raw;
-	  Data ANDFunctionTestData= new Data(new String(datatext.txt));
-	  raw = new Neuron[3];
-	  for(int i = 0; i<raw.length;i++)
-	  	raw[i] = new InputNeuron(i);
-	  InputLayer in = new InputLayer(raw);
-	  in.hookToDataset(ANDFunctionTestData.nextDataset());
-	  
+	//testData();
+	  testNetwork();
 	  
 	  
 	}
