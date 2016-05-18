@@ -15,7 +15,7 @@ public class Perceptron extends Neuron{
 	
 	public Perceptron(){
 		super();
-		threshold= 1.0; //TODO support other thresholds?
+		threshold= 1.0f; //TODO support other thresholds?
 		inputs_and_weights = new HashMap<Neuron, Double>();
 		best_weights = new HashMap<Neuron, Double>();
 		num++;
