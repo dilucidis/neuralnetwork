@@ -3,13 +3,12 @@ package perceptual_network;
 import neurons.*;
 
 public class InputLayer extends Layer {
-	private boolean[] currentDataSet;
 
-	public InputLayer(int size) {
+	//inputs to be moved to network
+	public InputLayer(int size, Network n) {
 		super(size);
-		currentDataSet= new boolean[size];
 		for (int i = 0; i<size; i++){
-			super.bank[i] =  new InputNeuron(i);
+			super.bank[i] =  new InputNeuron(i, n);
 		}
 	}
 	
