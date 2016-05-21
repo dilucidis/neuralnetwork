@@ -29,16 +29,6 @@ public class Generator {
 			isMax=false;
 		}
 		
-		//test (more pruning)
-		if (isMax && beta==-10){ //if minimizing move already found
-			return Integer.MAX_VALUE; //Ignore node and children
-		}
-		
-		//test (more pruning)
-		if (!isMax && alpha>-10 && alpha<0){ //if maximizing move already found
-			return Integer.MIN_VALUE; //Ignore node and children
-		}
-		
 		System.out.println("\nMINIMAX\ndepth: "+depth+"\nalpha: "+alpha+"\nbeta: "+beta); //console
 		while(a<=b && a>=alpha && b<=beta){
 			System.out.println("isWin(): "+isWin(input)); //console
