@@ -1,5 +1,5 @@
 //http://web.cs.ucla.edu/~rosen/161/notes/alphabeta.html
-//1 is AI
+//1 is CPU
 package cases;
 
 import java.awt.Point;
@@ -7,109 +7,137 @@ import java.awt.Point;
 public class Generator {
 	private String out;
 	private Point[] board;
-	private int index, score;
+	private int index, max, drawIndex, depthZeroIndex;
 	
 	public Generator(String in){
 		board=new Point[in.length()/2];
 		for (int i=0;i<in.length()/2;i++){
 			board[i]=new Point(Integer.parseInt(""+in.charAt(2*i)), Integer.parseInt(""+in.charAt(2*i+1))); //pairs booleans
 		}
-		score=Integer.MIN_VALUE;
+		max=Integer.MIN_VALUE; drawIndex=-1;
 		minimax(board, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
 	private int minimax(Point[] input, int depth, int alpha, int beta) {
 		boolean isMax; 
-		int a=Integer.valueOf(alpha);
-		int b=Integer.valueOf(beta);
 		Point[] temp=new Point[input.length];
-		if(depth%2==0){ //is it a maximizing or minimizing node
+		if(depth%2==0){ 
 			isMax=true;
 		}else{
 			isMax=false;
 		}
 		
-		System.out.println("\nMINIMAX\ndepth: "+depth+"\nalpha: "+alpha+"\nbeta: "+beta); //console
-		while(a<=b && a>=alpha && b<=beta){
-			System.out.println("isWin(): "+isWin(input)); //console
-			if(isWin(input)==1){ //set score if a player wins
-				if (isMax) alpha=depth-10;
-				else beta=depth-10;
-				break;
-			}else if(isWin(input)==-1){
-				if (isMax) alpha=-10;
-				else beta=-10;
-				break;
-			}
-			else{
-				
-				for (int i=0; i<input.length; i++){ //loop through each square
-					if (input[i].x==0){ //if square is empty
-						 System.out.println("next index: "+i);
-						 copy(input, temp);
-						 temp[i].x=1;
-						 if (isMax){
-							 temp[i].y=1;
-							 a=minimax(temp, depth+1, alpha, beta);
-							 if (a>alpha){
-								 if (a>score){
-									score=Integer.valueOf(a);
-									index=Integer.valueOf(i);
-								 }
-								alpha=Integer.valueOf(a);
-							 }
-						 }else{
-							 temp[i].y=0;
-							 b=minimax(temp, depth+1, alpha, beta);
-							 if (b<beta){
-								 beta=Integer.valueOf(b);
-							 }
-						 }
-					}
+		if (isMax){
+			alpha=evaluate(input);
+		}else{
+			beta=evaluate(input);
+		}
+		
+		System.out.println("\nMINIMAX\ndepth: "+depth+"\nisMax: "+isMax+"\nbeta: "+beta+"\nalpha: "+alpha); //console
+		
+		if (alpha>-50 && beta<50 || alpha==Integer.MIN_VALUE || beta==Integer.MAX_VALUE){ //if not a win
+			for (int i=0;i<input.length;i++){
+				if (depth==0){
+					depthZeroIndex=Integer.valueOf(i);
 				}
-				
+				if (alpha<=beta){
+					if (isFull(input) && evaluate(input)==0){
+						drawIndex=Integer.valueOf(depthZeroIndex);
+					}
+					if (input[i].x==0){
+						copy(input,temp);
+						temp[i].x=1;
+						if (isMax){
+							temp[i].y=1;
+							alpha=minimax(temp, depth+1, alpha, beta);
+							if (alpha<=beta){	
+								if (alpha>max){
+									max=Integer.valueOf(alpha);
+									index=Integer.valueOf(i);
+								}
+							}
+						}else{
+							temp[i].y=0;
+							beta=minimax(temp, depth+1, alpha, beta);							}
+						}
+					
+					if (depth==0 && i==input.length-1){ //by the last child node
+						if (max<50){
+							index=Integer.valueOf(drawIndex);
+						}
+					}
+				}	
 			}
 		}
-			
+		
 		if(isMax) return alpha;
 		else return beta;
 	}
 	
-	private int isWin(Point[] b){
-		if(b[0].x==1 && b[1].x==1 && b[2].x==1  
-		&& b[0].y==b[1].y && b[1].y==b[2].y 
-		|| b[0].x==1 && b[3].x==1 && b[6].x==1  
-		&& b[0].y==b[3].y && b[3].y==b[6].y){
-			if(b[0].y==1) return 1;
-			else return -1;
-		}
+	private int evaluate(Point[] brd){
+		int score=0;
+		score+=evaluate(brd[0],brd[1],brd[2]);
+		score+=evaluate(brd[3],brd[4],brd[5]);
+		score+=evaluate(brd[6],brd[7],brd[8]);
 		
-		if(b[3].x==1 && b[4].x==1 && b[5].x==1
-		&& b[3].y==b[4].y && b[4].y==b[5].y
-		|| b[1].x==1 && b[4].x==1 && b[7].x==1
-		&& b[1].y==b[4].y && b[4].y==b[7].y
-		|| b[0].x==1 && b[4].x==1 && b[8].x==1 
-		&& b[0].y==b[4].y && b[4].y==b[8].y
-		|| b[2].x==1 && b[4].x==1 && b[6].x==1
-		&& b[2].y==b[4].y && b[4].y==b[6].y){
-			if(b[4].y==1) return 1;
-			else return -1;
-		}
+		score+=evaluate(brd[0],brd[3],brd[6]);
+		score+=evaluate(brd[1],brd[4],brd[7]);
+		score+=evaluate(brd[2],brd[5],brd[8]);
 		
-		if(b[6].x==1 && b[7].x==1 && b[8].x==1
-		&& b[6].y==b[7].y && b[7].y==b[8].y
-		|| b[2].x==1 && b[5].x==1 && b[8].x==1
-		&& b[2].y==b[5].y && b[5].y==b[8].y){
-			if(b[8].y==1) return 1;
-			else return -1;
-		}
+		score+=evaluate(brd[0],brd[4],brd[8]);
+		score+=evaluate(brd[6],brd[4],brd[2]);
 		
-		return 0;
+		return score;
 	}
 	
-	private void copy(Point[] a, Point[] b){
-		for (int i=0;i<a.length;i++)
-			b[i]=new Point(a[i].x,a[i].y);
+	private int evaluate(Point a, Point b, Point c){
+		int score=0;
+		int humanMoves=0;
+		int cpuMoves=0;
+		int empty=0;
+		Point[] line={a,b,c};
+		
+		for (Point pt: line){
+			if (pt.x==1){
+				if (pt.y==1)
+					cpuMoves++;
+				else
+					humanMoves++;
+			}else{
+				empty++;
+			}
+		}
+		
+		if (3-cpuMoves==empty){
+			switch(cpuMoves){
+			default: break;
+			case 1: score++;
+					break;
+			case 2: score+=10;
+					break;
+			case 3: score+=100;
+					break;
+			}
+		}	
+		
+		if (3-humanMoves==empty){
+			switch(humanMoves){
+			default: break;
+			case 1: score--;
+					break;
+			case 2: score-=10;
+					break;
+			case 3: score-=100;
+					break;
+			}
+		}
+	
+		return score;
+	}
+	
+	private void copy(Point[] original, Point[] b){
+		for (int i=0;i<original.length;i++)
+			b[i]=new Point(original[i].x,original[i].y);
 	}
 	
 	private boolean isFull(Point[] brd){
@@ -118,16 +146,12 @@ public class Generator {
 				return false;
 		}return true;
 	}
-
-	private void padOut(){
-		for (int i=0; i<4-out.length();i++){
-			out="0"+out;
-		}
-	}
 	
 	public String getOut(){
 		out=Integer.toString(index, 2);
-		padOut();
+		while (out.length()!=4){
+			out="0"+out;
+		}
 		return out;
 	}
 
