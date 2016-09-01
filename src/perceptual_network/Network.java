@@ -42,6 +42,11 @@ public class Network implements Updateable {
 			l.update();
 		
 	}
+	public IO setInput(IO in){
+		IO temp = this.io;
+		this.io = in;
+		return temp;
+	}
 	public boolean getInput(int x){
 		return io.getInputValue(x);
 	}

@@ -30,7 +30,7 @@ public class Tester {
 	}
 	
 	private static void testNetwork(){
-		Data newData = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\data\\datasets.txt"));
+		Data newData = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\src\\data\\datasets.txt"));
 		Network New = new Network(4, 4, newData);
 		
 		New.update();
@@ -39,16 +39,17 @@ public class Tester {
 	
 	private static void testInputNeurons(){
 		//shit this all got real complicated real fast
-//		IO simpleCase = new IO(new boolean[]{true},0);
+		IO simpleCase = new IO(new boolean[]{true},0);
 		
-		Network n = new Network();
+		Network n = new Network(1,1);
+		n.setInput(simpleCase);
 		InputNeuron I = new InputNeuron(0, n);
 		System.out.println(I.checkFire());
 		//this is false, neuron hasn't updated yet and default is false
 		I.update();
 		System.out.println(I.checkFire());
 		//the input neuron's input reads as true, so it fires after updating
-//		simpleCase = new IO(new boolean[]{false} ,0);
+		n.setInput(new IO(new boolean[]{false} ,0));
 		I.update();
 		System.out.println(I.checkFire());
 		//after changing the input array and updating, the neuron is no longer firing
@@ -67,16 +68,22 @@ public class Tester {
 	}
 	
 	private static void testIO(){
-		IO test = new IO(new boolean[3],new boolean[3]);
+		IO test = new IO(new boolean[]{true,true,false},new boolean[]{false,true,true});
+		System.out.println("inputs: ");
 		for(int i = 0; i < 3; i++)
 			System.out.println(test.getInputValue(i));
+		System.out.println("outputs: ");
+		for(int i = 0; i < 3; i++)
+			System.out.println(test.getOutputValue(i));
+		System.out.println("finished IO testing");
 	}
 	
 	private static void testData(){
 		
-		Data test = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\data\\datasets.txt"));
+		Data test = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\src\\data\\datasets.txt"));
 		IO io = test.nextDataSet();
-		io.getInputValue(0);
+		for(int i = 0; i<2;i++)
+			System.out.println(io.getInputValue(i));
 	}
 	private static void testAll(){
 //		  System.out.println("Testing full functionality: ");
@@ -89,11 +96,11 @@ public class Tester {
 //		  in.hookToDataset(ANDFunctionTestData.nextDataset());
 	}
 	public static void main(String[] args) {
-	  testPerceptrons();
-	//testInputNeurons();
-	testLayers();
+	  //testPerceptrons();
+	  //testInputNeurons();
+	  //testLayers();
 	testIO();
-	//testData();
+	testData();
 	//testNetwork();
 	  
 	  
