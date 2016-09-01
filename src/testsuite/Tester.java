@@ -89,12 +89,12 @@ public class Tester {
 //		  in.hookToDataset(ANDFunctionTestData.nextDataset());
 	}
 	public static void main(String[] args) {
-	//testPerceptrons();
+	  testPerceptrons();
 	//testInputNeurons();
-	//testLayers();
-	//testIO();
-	  testData();
-	  testNetwork();
+	testLayers();
+	testIO();
+	//testData();
+	//testNetwork();
 	  
 	  
 	}
