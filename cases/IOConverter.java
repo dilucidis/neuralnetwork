@@ -46,9 +46,9 @@ public class IOConverter {
 		input=new boolean[inLine2.length()];
 		output=new boolean[outLine2.length()];
 		for (int i=0;i<inLine2.length();i++)
-			input[i]=(Integer.parseInteger(""+inLine2.charAt(i))!=0);
+			input[i]=(Integer.parseInt(""+inLine2.charAt(i))!=0);
 		for (int i=0;i<outLine2.length();i++)
-			output[i]=(Integer.parseInteger(""+outLine2.charAt(i))!=0);
+			output[i]=(Integer.parseInt(""+outLine2.charAt(i))!=0);
 		ioList[index]=new IO(input, output);
 	}
 	
