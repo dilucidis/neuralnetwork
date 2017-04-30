@@ -16,6 +16,8 @@ public abstract class Layer implements Updateable{
 		//my new favorite trick
 		this();
 		bank = new Neuron[size];
+		for(int i = 0; i < size; i++)
+			bank[i] = new Perceptron();
 	}
 	public Layer(Neuron[] rawLayer){
 		this(rawLayer.length);

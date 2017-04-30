@@ -35,7 +35,7 @@ public class Tester {
 	
 	private static void testNetwork(){
 		Data newData = new Data(new File(Tester.path));
-		Network New = new Network(4, 4, newData);
+		Network New = new Network(3, 3, newData);
 		
 		New.update();
 		New.getReal();
