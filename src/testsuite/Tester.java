@@ -12,6 +12,10 @@ public class Tester {
 	/**
 	 * @param args
 	 */
+	static String path;
+	private static void setPath(String path){
+		Tester.path = path;
+	}
 	private static void testPerceptrons(){
 		Perceptron p = new Perceptron();
 		Perceptron c = new Perceptron(p);
@@ -30,7 +34,7 @@ public class Tester {
 	}
 	
 	private static void testNetwork(){
-		Data newData = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\src\\data\\datasets.txt"));
+		Data newData = new Data(new File(Tester.path));
 		Network New = new Network(4, 4, newData);
 		
 		New.update();
@@ -80,7 +84,7 @@ public class Tester {
 	
 	private static void testData(){
 		
-		Data test = new Data(new File("C:\\Users\\Shane Parr\\git\\neuralnetwork\\src\\data\\datasets.txt"));
+		Data test = new Data(new File(Tester.path));
 		IO io = test.nextDataSet();
 		for(int i = 0; i<2;i++)
 			System.out.println(io.getInputValue(i));
@@ -96,14 +100,13 @@ public class Tester {
 //		  in.hookToDataset(ANDFunctionTestData.nextDataset());
 	}
 	public static void main(String[] args) {
-	  //testPerceptrons();
-	  //testInputNeurons();
-	  //testLayers();
-	testIO();
-	testData();
-	//testNetwork();
-	  
-	  
+		setPath("/Users/sparr/workspace/neuralnetwork/src/data/datasets.txt");
+		testPerceptrons();
+		testInputNeurons();
+		testLayers();
+		testIO();
+		testData();
+		testNetwork();
 	}
 
 }
