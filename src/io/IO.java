@@ -7,7 +7,7 @@ public class IO {
 	private boolean outputGiven = false;
 	
 	public IO(int inputSize, int outputSize) {
-		this.input = new boolean[inputSize];
+		this.input  = new boolean[inputSize];
 		this.output = new boolean[outputSize];
 	}
 	
@@ -31,6 +31,13 @@ public class IO {
 		for(int i = 0; i < output.length; i++)
 			this.output[i]=output[i];
 		outputGiven = true;
+	}
+	
+	public int getInputLength(){
+		return input.length;
+	}
+	public int getOutputLength(){
+		return output.length;
 	}
 	
 	public boolean getInputValue(int x){
