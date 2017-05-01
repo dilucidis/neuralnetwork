@@ -53,7 +53,11 @@ public class Network implements Updateable {
 	public boolean getOutput(int y){
 		return io.getOutputValue(y);
 	}
-	public boolean[] getReal(){
-		return ((OutputLayer) layers.get(layers.size()-1)).output();
+	public boolean[] getOutput(){
+		return this.out;
+	}
+	public void run(){
+		this.update();
+		this.out = ((OutputLayer) layers.get(layers.size()-1)).output();
 	}
 }
