@@ -9,7 +9,6 @@ import io.IO;
 
 public class Network implements Updateable {
 	private IO io;
-	//TODO add input implementation to this guy
 	private boolean[] out;
 	private Data data;
 	private int layerlength;
@@ -23,7 +22,7 @@ public class Network implements Updateable {
 	public Network(int numHidden, int layerlength){
 		this();
 		this.layerlength=layerlength;
-		layers.add(new InputLayer(layerlength, this));
+		layers.add(new InputLayer(layerlength));
 		for(int i = 1;  i<=numHidden; i++)
 			layers.add(new InnerLayer(layerlength));
 		layers.add(new OutputLayer(layerlength));

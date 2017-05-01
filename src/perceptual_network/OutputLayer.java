@@ -1,31 +1,29 @@
 package perceptual_network;
 
 import neurons.Neuron;
+import neurons.Perceptron;
 
 public class OutputLayer extends Layer {
 
 
 	public OutputLayer(int size) {
 		super(size);
-		// TODO Auto-generated constructor stub
 	}
 
 	public OutputLayer(Neuron[] rawLayer) {
-		super(rawLayer);
-		// TODO Auto-generated constructor stub
+		super(rawLayer.length);
+		for(Neuron n : rawLayer)
+			n = new Perceptron();
 	}
+	
 	public boolean[] output(){
-		float f;
 		boolean[] out = new boolean[super.bank.length];
-		for(int i = 0; i<out.length;i++){
-			f = bank[i].checkFire();
-			if (f==1.0f)
+		for(int i = 0; i<out.length;i++)
+			if(bank[i].checkFire()>=1.0f)
 				out[i]=true;
-			else if(f==0.0f)
-				out[i]=false;
 			else
-				out[out.length]=false;
-		}
+				out[i]=false;
+		
 		return out;
 	}
 }
