@@ -19,6 +19,9 @@ public abstract class Neuron implements Updateable{
 	public static int getNum(){
 		return num;
 	}
+	public static void resetNum(){
+		num=0;
+	}
 
 	public float checkFire() {
 		return this.fireValue;

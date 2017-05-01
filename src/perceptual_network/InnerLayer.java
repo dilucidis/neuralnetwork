@@ -19,6 +19,9 @@ public class InnerLayer extends Layer {
 	public static int getNum(){
 		return num;
 	}
+	public static void resetNum(){
+		num=0;
+	}
 	
 	public void wireAxon(Neuron p, int y){
 		((Perceptron) super.bank[y]).addInput(p);

@@ -37,6 +37,9 @@ public class Perceptron extends Neuron{
 	public static int getNum(){
 		return num;
 	}
+	public static void resetNum(){
+		num=0;
+	}
 	//update is the sum function which determines neuronal activity (fire or not fire)
 	public void update() {
 		resetFire();

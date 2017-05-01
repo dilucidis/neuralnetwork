@@ -23,6 +23,9 @@ public class InputNeuron extends Neuron{
 	public static int getNum(){
 		return num;
 	}
+	public static void resetNum(){
+		num=0;
+	}
 	//this should only be used for input neurons to communicate
 	//does this work?
 	//update for this neuron will read the input boolean array, and fire accordingly.
