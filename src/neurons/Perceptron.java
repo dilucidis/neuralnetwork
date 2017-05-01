@@ -43,7 +43,7 @@ public class Perceptron extends Neuron{
 		int sum = 0;
 		//summation of input neuron fire value*weight
 		for (Map.Entry<Neuron, Double> entry : inputs_and_weights.entrySet())
-				sum += entry.getValue();
+				sum += entry.getValue()*entry.getKey().checkFire();
 		//compare sum to threshold, if it exceeds, fire. Else, keep the default
 		if (sum >= threshold)
 			super.manualFire(1.0f);
