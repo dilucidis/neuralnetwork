@@ -48,6 +48,6 @@ public class IO {
 		if(outputGiven)
 			return this.output[y];
 		else
-			throw new RuntimeException("no output givsen");
+			throw new RuntimeException("no output given");
 	}
 }
