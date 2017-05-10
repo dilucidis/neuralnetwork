@@ -30,7 +30,7 @@ public class Data {
 	protected boolean[] parseLine(String line){
 		boolean[] set = new boolean[line.length()];
 		for(int i = 0; i < line.length();i++)
-			set[i] = (line.substring(i, i+1).equals('1'));
+			set[i] = line.charAt(i)=='1';
 		return set;
 	}
 	public IO nextDataSet(){
@@ -39,6 +39,9 @@ public class Data {
 			return cases[currentCaseNumber-1];
 		else
 			return null; //be careful with this: check if your dataset is null before you use it
+	}
+	public int casesLeft(){
+		return cases.length-currentCaseNumber;
 	}
 	public int resetCaseNumber(){
 		int temp = currentCaseNumber;

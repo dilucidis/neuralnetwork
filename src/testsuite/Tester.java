@@ -48,8 +48,6 @@ public class Tester {
 		p.manualFire(true);
 		c.update();
 		assertTrue(c.checkFire()==1.0);
-		System.out.println(Perceptron.getNum());
-		System.out.println(InputNeuron.getNum());
 		assertTrue(Perceptron.getNum()==2&&InputNeuron.getNum()==0);
 		assertTrue(Neuron.getNum()==2);
 		reset();
@@ -58,9 +56,14 @@ public class Tester {
 	@Test
 	public void testData(){
 		Data test = new Data(new File(Tester.path));
+		assertTrue(test.currentCaseNumber==0);
+		assertTrue(test.casesLeft()==4);
 		IO io = test.nextDataSet();
+		assertTrue(io.getInputLength()==3);
 		for(int i = 0; i<io.getInputLength();i++)
 			assertTrue(io.getInputValue(i));
+		assertTrue(io.getOutputLength()==1);
+		assertTrue(io.getOutputValue(0));
 	}
 	@Test
 	public void testInputNeurons(){
