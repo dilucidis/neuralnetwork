@@ -1,19 +1,10 @@
 package perceptual_network;
 
-import neurons.Neuron;
-import neurons.Perceptron;
-
-public class OutputLayer extends Layer {
+public class OutputLayer extends InnerLayer {
 
 
 	public OutputLayer(int size) {
 		super(size);
-	}
-
-	public OutputLayer(Neuron[] rawLayer) {
-		super(rawLayer.length);
-		for(Neuron n : rawLayer)
-			n = new Perceptron();
 	}
 	
 	public boolean[] output(){

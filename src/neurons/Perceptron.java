@@ -42,8 +42,8 @@ public class Perceptron extends Neuron{
 	}
 	//update is the sum function which determines neuronal activity (fire or not fire)
 	public void update() {
-		resetFire();
-		int sum = 0;
+		super.resetFire();
+		float sum = 0;
 		//summation of input neuron fire value*weight
 		for (Map.Entry<Neuron, Double> entry : inputs_and_weights.entrySet())
 				sum += entry.getValue()*entry.getKey().checkFire();

@@ -3,6 +3,7 @@ package testsuite;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.Arrays;
 
 import data.Data;
 import io.IO;
@@ -41,6 +42,8 @@ public class Tester {
 		Perceptron c = new Perceptron(p);
 		c.setDefaultWeight(1);
 		c.addInput(p);
+		assertTrue(p.checkFire()==0);
+		assertTrue(c.checkFire()==0);
 		assertEquals(c.getInputsAndWeights().size(),1);
 		assertTrue(c.getInputsAndWeights().get(p)==1.0);
 		c.update();
@@ -101,14 +104,57 @@ public class Tester {
 			assertTrue(test.getOutputValue(1));
 			assertTrue(test.getOutputValue(2));
 	}
+	@Test
+	public void testInputLayer(){
+		//new input of True, output of size 1
+		IO inputs = new IO(new boolean[]{true}, 1);
+		//2 layer network of length 1 neuron per layer to run on this input
+		//create input layer
+		InputLayer ilayer = new InputLayer(1);
+		//feed in the input
+		ilayer.feedValues(inputs);
+		assertTrue(ilayer.length()==1);
+		ilayer.update();
+		assertTrue(Arrays.equals(ilayer.checkfire(), new float[]{1.0f}));
 	
+	}
+	@Test
+	public void testInnerLayerConnectivity(){
+		InnerLayer[] layers = new InnerLayer[2];
+		Perceptron alwaysOn = new Perceptron();
+		alwaysOn.manualFire(true);
+		layers[0] = new InnerLayer(1);
+		layers[0].setNeurons(new Perceptron[]{alwaysOn});
+		assertTrue(Arrays.equals(layers[0].checkfire(), new float[]{1.0f}));
+		layers[1] = new InnerLayer(1);
+		((Perceptron) layers[1].grabAxon(0)).setDefaultWeight(2.0);
+		layers[1].wireAllAxons(layers[0]);
+		assertTrue(Arrays.equals(layers[1].checkfire(), new float[]{0.0f}));
+		layers[1].update();
+		assertTrue(Arrays.equals(layers[1].checkfire(), new float[]{1.0f}));
+		
+	}
+	@Test
+	public void testOutputLayer(){
+		OutputLayer olay = new OutputLayer(1);
+		Perceptron alwaysOn = new Perceptron();
+		alwaysOn.manualFire(true);
+		olay.setNeuron(alwaysOn, 0);
+		assertTrue(Arrays.equals(olay.output(), new boolean[]{true}));
+		
+	}
 	@Test
 	public void testNetwork(){
 		Data newData = new Data(new File(Tester.path));
-		Network New = new Network(1, 3, newData);
+		Config c = new Config();
+		c.setData(newData);
+		c.setHiddenLayerLength(3);
+		c.setInputLayerLength(3);
+		c.setNumberOfHiddenLayers(1);
+		c.setOutputLayerLength(1);
+		Network New = new Network(c);
 		New.run();
-		for (boolean out : New.getOutput())
-			assertTrue(out);
+		assertTrue(Arrays.equals(New.getOutput(), new boolean[]{true}));
 		reset();
 	}
 	

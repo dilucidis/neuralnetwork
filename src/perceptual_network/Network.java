@@ -1,6 +1,5 @@
 package perceptual_network;
 
-import java.util.ArrayList;
 
 import data.Data;
 
@@ -9,41 +8,63 @@ import io.IO;
 
 public class Network implements Updateable {
 	private IO io;
+	private boolean freshIO;
 	private boolean[] out;
 	private Data data;
-	private int layerlength;
 
-	private ArrayList<Layer> layers;
+	private Layer[] layers;
 	
-	public Network() {
-		layers = new ArrayList<Layer>();
+	public Network(Config c){
+		//takes in a config file
+		//the layers of the network: input + nh*hidden + output
+		this.layers = new Layer[c.getNumberOfHiddenLayers()+2]; 
+		//init the inputlayer
+		layers[0] = new InputLayer(c.getInputLayerLength());
+		//init the innerlayers, and wire them with the previous layer
+		for(int i = 1;  i<=c.getNumberOfHiddenLayers(); i++){
+			layers[i] = new InnerLayer(c.getHiddenLayerLength());
+			((InnerLayer)layers[i]).wireAllAxons(layers[i-1]);
+		}
+		//init the last layer as an outputlayer
+		layers[layers.length-1] = new OutputLayer(c.getOutputLayerLength());
+		//wire it with the previous layer
+		((OutputLayer)layers[layers.length-1]).wireAllAxons(layers[layers.length-2]);
+		//if the config includes a data file, read it in
+		if(c.getData()!=null)
+			this.data = c.getData();
+		//if there are manual weight settings:
+		if(c.getInnerWeights()!=null&&c.getOutputWeights()!=null){
+			//set inner weights
+			for(int i = 1; i < layers.length-1; i++)
+				((InnerLayer)layers[i]).setDefaultWeights(c.getInnerWeights()[i]);
+			//set the output weights
+			((InnerLayer)layers[layers.length-1]).setDefaultWeights(c.getOutputWeights());
+		}
 	}
-	
-	public Network(int numHidden, int layerlength){
-		this();
-		this.layerlength=layerlength;
-		layers.add(new InputLayer(layerlength));
-		for(int i = 1;  i<=numHidden; i++)
-			layers.add(new InnerLayer(layerlength));
-		layers.add(new OutputLayer(layerlength));
-		
-	}
-	public Network(int numHidden, int layerlength, Data data){
-		this(numHidden, layerlength);
-		this.data = data;
-		io = new IO(layerlength,1);
-	}
+
 	
 	public void update() {
-		io = data.nextDataSet();
-		out = new boolean[this.layerlength];
+		//check if IO has been fed manually, else read from dataset
+		if(!freshIO)
+			if(data==null)
+				throw new RuntimeException("null data and no manual IO");
+			else
+				setInput(data.nextDataSet());
+		//actually give the network its food
+		((InputLayer)this.layers[0]).feedValues(this.io);
+		//run the network
 		for( Layer l : layers)
 			l.update();
+		//read the output to out
+		out = ((OutputLayer)layers[layers.length-1]).output();
+		//mark the current IO as used
+		freshIO = false;
 		
 	}
 	public IO setInput(IO in){
 		IO temp = this.io;
 		this.io = in;
+		freshIO = true;
 		return temp;
 	}
 	public boolean getInput(int x){
@@ -57,6 +78,6 @@ public class Network implements Updateable {
 	}
 	public void run(){
 		this.update();
-		this.out = ((OutputLayer) layers.get(layers.size()-1)).output();
+		this.out = ((OutputLayer) layers[layers.length-1]).output();
 	}
 }

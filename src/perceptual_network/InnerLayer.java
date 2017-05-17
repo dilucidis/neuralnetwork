@@ -13,6 +13,8 @@ public class InnerLayer extends Layer {
 	
 	public InnerLayer(int size) {
 		super(size);
+		for(int i = 0; i<size; i++)
+			bank[i] = new Perceptron();
 		num++;
 	}
 	
@@ -27,9 +29,19 @@ public class InnerLayer extends Layer {
 		((Perceptron) super.bank[y]).addInput(p);
 	}
 	
-	public void wireAxons(Neuron[] I, int y){
-		((Perceptron) super.bank[y]).addInputs(I);
+	public void wireAxons(Layer l, int y){
+		((Perceptron) super.bank[y]).addInputs(l.bank);
 	}
 	
+	public void wireAllAxons(Layer l){
+		for(int i = 0; i < super.bank.length; i++){
+			this.wireAxons(l, i);
+		}
+	}
+	
+	public void setDefaultWeights(float[] weights){
+		for(int i = 0; i < weights.length; i++)
+			((Perceptron)super.bank[i]).setDefaultWeight(weights[i]);
+	}
 
 }

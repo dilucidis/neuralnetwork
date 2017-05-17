@@ -16,15 +16,11 @@ public abstract class Layer implements Updateable{
 		//my new favorite trick
 		this();
 		bank = new Neuron[size];
-		for(int i = 0; i < size; i++)
-			bank[i] = new Perceptron();
-	}
-	public Layer(Neuron[] rawLayer){
-		this(rawLayer.length);
-		for(int i = 0; i<rawLayer.length;i++)
-				bank[i]=rawLayer[i];
 	}
 	
+	public int length(){
+		return bank.length;
+	}
 	public void update(){
 		for(Neuron n: bank)
 			n.update();
@@ -54,5 +50,11 @@ public abstract class Layer implements Updateable{
 	
 	public static void resetNum(){
 		num=0;
+	}
+	public float[] checkfire(){
+		float[] firevalues = new float[this.bank.length];
+		for (int i = 0; i < this.bank.length; i++)
+			firevalues[i] = this.bank[i].checkFire();
+		return firevalues;
 	}
 }
