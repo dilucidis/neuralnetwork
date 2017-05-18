@@ -59,11 +59,11 @@ public class Network implements Updateable {
 		out = ((OutputLayer)layers[layers.length-1]).output();
 		//mark the current IO as used
 		freshIO = false;
-		
 	}
 	public IO setInput(IO in){
 		IO temp = this.io;
 		this.io = in;
+		//wouldn't wnat to toss out fresh data
 		freshIO = true;
 		return temp;
 	}
@@ -77,7 +77,9 @@ public class Network implements Updateable {
 		return this.out;
 	}
 	public void run(){
+		//actually run the network
 		this.update();
+		//write to output
 		this.out = ((OutputLayer) layers[layers.length-1]).output();
 	}
 }
