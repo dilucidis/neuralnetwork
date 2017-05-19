@@ -12,15 +12,19 @@ public class Config {
 	private float[] initial_output_weights;
 	private Data data;
 	public Config(){
-		setNumberOfHiddenLayers(-1);
-		setInputLayerLength(-1);
-		setHiddenLayerLength(-1);
-		setOutputLayerLength(-1);
+		this.setNumberOfHiddenLayers(-1);
+		this.setInputLayerLength(-1);
+		this.setHiddenLayerLength(-1);
+		this.setOutputLayerLength(-1);
 	}
 	public void setNumberOfHiddenLayers(int n){
 		num_hidden = n;
 	}
-	
+	public void setAllLayersLength(int l){
+		this.setInputLayerLength(l);
+		this.setHiddenLayerLength(l);
+		this.setOutputLayerLength(l);
+	}
 	public void setInputLayerLength(int l){
 		input_layer_length = l;
 	}

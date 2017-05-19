@@ -144,14 +144,37 @@ public class Tester {
 		
 	}
 	@Test
-	public void testNetwork(){
+	public void testNetwork1(){
+		Config c = new Config();
+		//simple network
+		c.setAllLayersLength(1);
+		c.setNumberOfHiddenLayers(100);
+		//this is sort of a cumbersome structure, kind of unfortunate
+		//but at the same time, more likely to have a few large layers
+		//then many small ones like this weird network
+		float[][] innerweights = new float[100][1];
+		//silly loop filling it with 1.0f
+		for (int i = 0; i < innerweights.length; i++){
+			innerweights[i][0] = 1.0f;
+		}
+		float[] outputweight = new float[]{1.0f};
+		//cumbersome way to set default weights, but here you have it
+		c.setInitialWeights(innerweights, outputweight);
+		Network line = new Network(c);
+		boolean[] singleTrue = new boolean[]{true};
+		IO input = new IO(singleTrue, 1);
+		line.setInput(input);
+		line.run();
+		assertTrue(Arrays.equals(line.getOutput(), singleTrue));
+	}
+	@Test
+	public void testNetwork2(){
 		Data newData = new Data(new File(Tester.path));
 		Config c = new Config();
 		c.setData(newData);
-		c.setHiddenLayerLength(3);
-		c.setInputLayerLength(3);
-		c.setNumberOfHiddenLayers(1);
+		c.setAllLayersLength(3);
 		c.setOutputLayerLength(1);
+		c.setNumberOfHiddenLayers(1);
 		Network New = new Network(c);
 		New.run();
 		assertTrue(Arrays.equals(New.getOutput(), new boolean[]{true}));
