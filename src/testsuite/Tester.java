@@ -168,7 +168,7 @@ public class Tester {
 		assertTrue(Arrays.equals(line.getOutput(), singleTrue));
 	}
 	
-	private Network setUpSevenNetwork(){
+	private Network setUpThreeNetwork(){
 		Data newData = new Data(new File(Tester.path));
 		Config c = new Config();
 		c.setData(newData);
@@ -178,29 +178,54 @@ public class Tester {
 		Network New = new Network(c);
 		return New;
 	}
-	
+	/*
+	 * datasets.txt has 4 cases:
+	 * 111 : 1
+	 * 110 : 0
+	 * 101 : 0
+	 * 100 : 0
+	 * Basically, the latter two inputs are binary, and the first input is alwaysON
+	 * for training purposes
+	 * The dataset is checking if the network can fire for 3
+	 * and stay silent for the rest
+	 */
 	@Test
+	//the first case is three: so threenwork should give true
 	public void testNetwork2(){
-		Network Sevenwork = this.setUpSevenNetwork();
-		Sevenwork.run();
-		assertTrue(Arrays.equals(Sevenwork.getOutput(), new boolean[]{true}));
+		Network Threework = this.setUpThreeNetwork();
+		Threework.run();
+		assertTrue(Arrays.equals(Threework.getOutput(), new boolean[]{true}));
+		reset();
+	}
+	@Test
+	//the rest of the cases aren't three, so it should give false
+	public void testNetwork3(){
+		Network Threework = this.setUpThreeNetwork();
+		int inputCount = 0;
+		Threework.pass();
+		while(Threework.dataLeft()){
+			Threework.run();
+			assertTrue(Arrays.equals(Threework.getOutput(), new boolean[]{false}));
+			inputCount++;
+		}
+		assertTrue(inputCount==3);
 		reset();
 	}
 	@Test
 	public void testNetworkDataLeftAndOverrunCount(){
-		Network Sevenwork = this.setUpSevenNetwork();
+		Network Threework = this.setUpThreeNetwork();
 		int inputCount = 0;
-		while(Sevenwork.dataLeft()){
-			Sevenwork.pass();
+		while(Threework.dataLeft()){
+			Threework.pass();
 			inputCount++;
 		}
 		assertTrue(inputCount==4);
-		assertTrue(Sevenwork.getOverrunCount()==0);
+		assertTrue(Threework.getOverrunCount()==0);
 		for(int i = 1; i<=4;i++){
-			Sevenwork.run();
-			assertTrue(Sevenwork.getOverrunCount()==i);
+			Threework.run();
+			assertTrue(Threework.getOverrunCount()==i);
 		}
-		
+		reset(); 
 	}
 	
 }
