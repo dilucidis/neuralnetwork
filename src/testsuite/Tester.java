@@ -198,7 +198,6 @@ public class Tester {
 		assertTrue(Sevenwork.getOverrunCount()==0);
 		for(int i = 1; i<=4;i++){
 			Sevenwork.run();
-			System.out.println(Sevenwork.getOverrunCount());
 			assertTrue(Sevenwork.getOverrunCount()==i);
 		}
 		
