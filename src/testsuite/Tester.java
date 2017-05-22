@@ -167,8 +167,8 @@ public class Tester {
 		line.run();
 		assertTrue(Arrays.equals(line.getOutput(), singleTrue));
 	}
-	@Test
-	public void testNetwork2(){
+	
+	private Network setUpSevenNetwork(){
 		Data newData = new Data(new File(Tester.path));
 		Config c = new Config();
 		c.setData(newData);
@@ -176,9 +176,32 @@ public class Tester {
 		c.setOutputLayerLength(1);
 		c.setNumberOfHiddenLayers(1);
 		Network New = new Network(c);
-		New.run();
-		assertTrue(Arrays.equals(New.getOutput(), new boolean[]{true}));
+		return New;
+	}
+	
+	@Test
+	public void testNetwork2(){
+		Network Sevenwork = this.setUpSevenNetwork();
+		Sevenwork.run();
+		assertTrue(Arrays.equals(Sevenwork.getOutput(), new boolean[]{true}));
 		reset();
+	}
+	@Test
+	public void testNetworkDataLeftAndOverrunCount(){
+		Network Sevenwork = this.setUpSevenNetwork();
+		int inputCount = 0;
+		while(Sevenwork.dataLeft()){
+			Sevenwork.pass();
+			inputCount++;
+		}
+		assertTrue(inputCount==4);
+		assertTrue(Sevenwork.getOverrunCount()==0);
+		for(int i = 1; i<=4;i++){
+			Sevenwork.run();
+			System.out.println(Sevenwork.getOverrunCount());
+			assertTrue(Sevenwork.getOverrunCount()==i);
+		}
+		
 	}
 	
 }

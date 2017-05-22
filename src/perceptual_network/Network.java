@@ -11,7 +11,7 @@ public class Network implements Updateable {
 	private boolean freshIO;
 	private boolean[] out;
 	private Data data;
-
+	private int overrunCount = 0;
 	private Layer[] layers;
 	
 	public Network(Config c){
@@ -46,20 +46,21 @@ public class Network implements Updateable {
 	public void update() {
 		//check if IO has been fed manually, else read from dataset
 		if(!freshIO)
-			if(data==null)
-				throw new RuntimeException("null data and no manual IO");
+			if(!dataLeft())
+				throw new RuntimeException("no data left or manual IO means no input.");
 			else
-				setInput(data.nextDataSet());
+				this.setInput(data.nextDataSet());
 		//actually give the network its food
 		((InputLayer)this.layers[0]).feedValues(this.io);
 		//run the network
 		for( Layer l : layers)
 			l.update();
 		//read the output to out
-		out = ((OutputLayer)layers[layers.length-1]).output();
+		this.out = ((OutputLayer)layers[layers.length-1]).output();
 		//mark the current IO as used
 		freshIO = false;
 	}
+	//for use internally changing out io, but also for dataless testing
 	public IO setInput(IO in){
 		IO temp = this.io;
 		this.io = in;
@@ -67,19 +68,52 @@ public class Network implements Updateable {
 		freshIO = true;
 		return temp;
 	}
+	
+	public void newData(Data data){
+		this.data = data;
+		//new data, so be be sure to read it
+		freshIO = false;
+	}
+	
 	public boolean getInput(int x){
 		return io.getInputValue(x);
 	}
-	public boolean getOutput(int y){
+	
+	public boolean getIOOutput(int y){
 		return io.getOutputValue(y);
 	}
+	
+	public boolean getOutput(int y){
+		return this.out[y];
+	}
+	
 	public boolean[] getOutput(){
 		return this.out;
 	}
+	
 	public void run(){
-		//actually run the network
-		this.update();
-		//write to output
-		this.out = ((OutputLayer) layers[layers.length-1]).output();
+		//actually run the network, but only if there is real data to work with
+		if(freshIO||dataLeft())
+			this.update();
+		else 
+			overrunCount++;
+		//after each this.update() call, this.out should be updated
+	}
+	//toss out the next piece of data without setting it as input
+	public void pass(){
+	if(dataLeft())
+		data.nextDataSet();
+	}
+	
+	public boolean dataLeft(){
+		return !(data==null||data.casesLeft()<=0);
+	}
+	
+	public int getOverrunCount(){
+		return overrunCount;
+	}
+	
+	public void resetOverrunCount(){
+		overrunCount = 0;
 	}
 }
