@@ -41,6 +41,7 @@ public abstract class Learnon extends Neuron implements Updateable {
 		super.fire(activationFunction(sum));
 	}
 
+	//crucially, addInput does not deep copy I; when I updates, inputs will as well
 	public void addInput(Neuron I) {
 		inputs_and_weights.put(I, defaultWeight);
 	}

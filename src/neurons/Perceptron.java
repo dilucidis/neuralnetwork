@@ -29,11 +29,6 @@ public class Perceptron extends Learnon{
 		num = 0;
 	}
 
-	//crucially, addInput does not deep copy I; when I updates, inputs will as well
-	@Override
-	public void addInput(Neuron I) {
-		inputs_and_weights.put(I, defaultWeight);
-	}
 	
 	public double getBias(){
 		return bias;
