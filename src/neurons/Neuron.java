@@ -3,6 +3,7 @@ package neurons;
 import interfaces.*;
 
 public abstract class Neuron implements Updateable{
+	
 	private static int num = 0;
 	private float fireValue;
 
@@ -20,26 +21,24 @@ public abstract class Neuron implements Updateable{
 		return num;
 	}
 	public static void resetNum(){
-		num=0;
+		num = 0;
 	}
 
 	public float checkFire() {
 		return this.fireValue;
 	}
-
+	//resetFire() is the samething as fire(0) or fire(false)
 	public float resetFire() {
-		return manualFire(0);
+		return fire(0);
 	}
-
-	public float manualFire(float active) {
+	//basically setFireValue by another name
+	public float fire(float active) {
 		float temp = this.fireValue;
 		this.fireValue = active;
 		return temp;
 	}
-	public float manualFire(boolean zoo){
-		if(zoo)
-			return manualFire(1.0f);
-		
-		return manualFire(0.0f);
+	//turn booleans to floats then just manualFire on the float
+	public float fire(boolean zoo){
+		return fire(zoo ? 1.0f : 0.0f);
 	}
 }

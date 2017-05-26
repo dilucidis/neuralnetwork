@@ -48,7 +48,7 @@ public class Tester {
 		assertTrue(c.getInputsAndWeights().get(p)==1.0);
 		c.update();
 		assertTrue(c.checkFire()==0.0);
-		p.manualFire(true);
+		p.fire(true);
 		c.update();
 		assertTrue(c.checkFire()==1.0);
 		assertTrue(Perceptron.getNum()==2&&InputNeuron.getNum()==0);
@@ -122,7 +122,7 @@ public class Tester {
 	public void testInnerLayerConnectivity(){
 		InnerLayer[] layers = new InnerLayer[2];
 		Perceptron alwaysOn = new Perceptron();
-		alwaysOn.manualFire(true);
+		alwaysOn.fire(true);
 		layers[0] = new InnerLayer(1);
 		layers[0].setNeurons(new Perceptron[]{alwaysOn});
 		assertTrue(Arrays.equals(layers[0].checkfire(), new float[]{1.0f}));
@@ -138,7 +138,7 @@ public class Tester {
 	public void testOutputLayer(){
 		OutputLayer olay = new OutputLayer(1);
 		Perceptron alwaysOn = new Perceptron();
-		alwaysOn.manualFire(true);
+		alwaysOn.fire(true);
 		olay.setNeuron(alwaysOn, 0);
 		assertTrue(Arrays.equals(olay.output(), new boolean[]{true}));
 		

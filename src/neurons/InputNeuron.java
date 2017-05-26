@@ -32,6 +32,6 @@ public class InputNeuron extends Neuron{
 	public void update() {
 		super.resetFire();
 		//manualFire converts {True,False} to {1.0f, 0.0f} automatically
-		super.manualFire(lastReadValue);
+		super.fire(lastReadValue);
 	}
 }
