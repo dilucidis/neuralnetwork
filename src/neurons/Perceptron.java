@@ -1,31 +1,24 @@
 package neurons;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Perceptron extends Learnon{
 	private static int num = 0; //running count of perceptrons
 	// if weighted inputs sum to this value, fire
-	double threshold;
-	
-	HashMap<Neuron, Double> best_weights; //learning is in progress, this is for the least error function
-	
+	double bias;
+		
 	public Perceptron(){
 		super();
-		threshold= 1.0f; //TODO support other thresholds?
-		best_weights = new HashMap<Neuron, Double>();
+		//the bias is negative to limit firing rates
+		bias= -1.0f; //TODO support other biases? 
 		num++;
 	}
-	
-	public Perceptron(Neuron[] inputs) {
-		this(); //call the other constructor
-		addInputs(inputs); //finish initialization with wiring of the inputs
+	public Perceptron(float bias){
+		this();
+		this.bias = bias;
 	}
 	//perceptron copy constructor (for deep copy capability)
 	public Perceptron(Perceptron p){
-		super(p); //call the copy constructor in class Neuron 
-		threshold= p.getThreshold(); //finish the perceptron only business
-		best_weights =  new HashMap<Neuron, Double>(p.getBestWeights());
+		super(p); //call the copy constructor in class Learnon 
+		bias= p.getBias(); //finish the perceptron only business
 		num++;
 	}
 	//static method for perceptron pop. count
@@ -33,27 +26,32 @@ public class Perceptron extends Learnon{
 		return num;
 	}
 	public static void resetNum(){
-		num=0;
+		num = 0;
 	}
 
 	//crucially, addInput does not deep copy I; when I updates, inputs will as well
+	@Override
 	public void addInput(Neuron I) {
 		inputs_and_weights.put(I, defaultWeight);
-		best_weights.put(I, defaultWeight);
 	}
 	
-	public double getThreshold(){
-		return threshold;
+	public double getBias(){
+		return bias;
 	}
 	
-
-	public HashMap<Neuron, Double> getBestWeights(){
-		return best_weights;
+	public void setBias(float b){
+		this.bias = b;
 	}
 
 	@Override
-	public float valueFunction(float sum) {
-		return (sum >= threshold) ? 1.0f : 0;
+	public float activationFunction(float sum) {
+		//simply enough, compare the sum to a threshold and fire
+		return (sum+bias >= 0) ? 1.0f : 0;
+	}
+
+	@Override
+	public float derivativeActivationFunction(float x) {
+		return 0; //sadly correct
 	}
 	
 }

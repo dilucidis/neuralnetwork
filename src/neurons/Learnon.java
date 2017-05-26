@@ -21,29 +21,26 @@ public abstract class Learnon extends Neuron implements Updateable {
 		defaultWeight = n.defaultWeight;
 		learningRate = n.learningRate;
 	}
+	public Learnon(Neuron[] inputs){
+		this(); //call the other constructor
+		addInputs(inputs); //finish initialization with wiring of the inputs
+	}
 	//got to implement this differently depending on what kind of neuron you are
-	public abstract float valueFunction(float sum);
+	public abstract float activationFunction(float x);
+	//this better be correctly implemented as the derivative of the value function
+	public abstract float derivativeActivationFunction(float x);
 	
 	@Override
 	public void update() {
 		super.resetFire();
 		float sum = 0;
+		
 		for (Map.Entry<Neuron, Double> entry : inputs_and_weights.entrySet())
 			sum += entry.getValue()*entry.getKey().checkFire();
-		super.manualFire(valueFunction(sum));
+		
+		super.fire(activationFunction(sum));
 	}
 
-	public double getDefaultWeight(){
-		return defaultWeight;
-	}
-
-	
-	public double setDefaultWeight(double newDW){
-		double temp = defaultWeight;
-		defaultWeight = newDW;
-		return temp;
-	}
-	
 	public void addInput(Neuron I) {
 		inputs_and_weights.put(I, defaultWeight);
 	}
@@ -56,15 +53,21 @@ public abstract class Learnon extends Neuron implements Updateable {
 	public HashMap<Neuron, Double> getInputsAndWeights(){
 		return inputs_and_weights;
 	}
+
+	public double getDefaultWeight(){
+		return defaultWeight;
+	}
+
+	public void setDefaultWeight(double newDW){
+		this.defaultWeight = newDW;
+	}
 	
 	public double getLearningRate(){
 		return learningRate;
 	}
 	
-	public double setLearningRate(double newLR){
-		double temp = learningRate;
-		learningRate= newLR;
-		return temp;
+	public void setLearningRate(double newLR){
+		this.learningRate = newLR;
 	}
 	
 }
