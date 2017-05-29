@@ -3,7 +3,6 @@ package neurons;
 
 public class InputNeuron extends Neuron{
 	private static int num = 0;
-
 	//store inputs here
 	private float lastReadValue;
 	
@@ -16,6 +15,7 @@ public class InputNeuron extends Neuron{
 	public void readValue(float input){
 		lastReadValue = input;
 	}
+	
 	public void readValue(boolean input){
 		lastReadValue = input ? 1.0f : 0.0f;
 	}
@@ -23,6 +23,7 @@ public class InputNeuron extends Neuron{
 	public static int getNum(){
 		return num;
 	}
+	
 	public static void resetNum(){
 		num=0;
 	}

@@ -5,6 +5,7 @@ import neurons.*;
 
 //updateable simply calls update on each neuron (layer type independent, which is nice)
 public abstract class Layer implements Updateable{
+	
 	private static int num = 0;
 	protected Neuron[] bank;
 	
@@ -21,10 +22,12 @@ public abstract class Layer implements Updateable{
 	public int length(){
 		return bank.length;
 	}
+	
 	public void update(){
 		for(Neuron n: bank)
 			n.update();
 	}
+	
 	public Neuron setNeuron(Neuron n, int x){
 		Neuron old = bank[x];
 		bank[x] = n;
@@ -51,6 +54,7 @@ public abstract class Layer implements Updateable{
 	public static void resetNum(){
 		num=0;
 	}
+	
 	public float[] checkfire(){
 		float[] firevalues = new float[this.bank.length];
 		for (int i = 0; i < this.bank.length; i++)

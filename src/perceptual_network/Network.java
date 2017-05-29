@@ -101,8 +101,8 @@ public class Network implements Updateable {
 	}
 	//toss out the next piece of data without setting it as input
 	public void pass(){
-	if(dataLeft())
-		data.nextDataSet();
+		if(dataLeft())
+			data.nextDataSet();
 	}
 	
 	public boolean dataLeft(){

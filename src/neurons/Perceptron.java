@@ -11,6 +11,7 @@ public class Perceptron extends Learnon{
 		bias= -1.0f; //TODO support other biases? 
 		num++;
 	}
+	
 	public Perceptron(float bias){
 		this();
 		this.bias = bias;
@@ -25,6 +26,7 @@ public class Perceptron extends Learnon{
 	public static int getNum(){
 		return num;
 	}
+	
 	public static void resetNum(){
 		num = 0;
 	}

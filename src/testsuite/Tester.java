@@ -26,9 +26,11 @@ public class Tester {
 		setPath();
 		reset();
 	}
+	
 	public void setPath(){
 		Tester.path = "/Users/sparr/workspace/neuralnetwork/src/data/datasets.txt";
 	}
+	
 	public void reset(){
 		Perceptron.resetNum();
 		Neuron.resetNum();
@@ -154,29 +156,33 @@ public class Tester {
 		//then many small ones like this weird network
 		float[][] innerweights = new float[100][1];
 		//silly loop filling it with 1.0f
-		for (int i = 0; i < innerweights.length; i++){
+		for (int i = 0; i < innerweights.length; i++)
 			innerweights[i][0] = 1.0f;
-		}
+		
 		float[] outputweight = new float[]{1.0f};
 		//cumbersome way to set default weights, but here you have it
 		c.setInitialWeights(innerweights, outputweight);
 		Network line = new Network(c);
 		boolean[] singleTrue = new boolean[]{true};
 		IO input = new IO(singleTrue, 1);
+		
 		line.setInput(input);
 		line.run();
+		
 		assertTrue(Arrays.equals(line.getOutput(), singleTrue));
 	}
 	
 	private Network setUpThreeNetwork(){
 		Data newData = new Data(new File(Tester.path));
 		Config c = new Config();
+		
 		c.setData(newData);
 		c.setAllLayersLength(3);
+		//overriding the previously set length of 3 for the output
 		c.setOutputLayerLength(1);
 		c.setNumberOfHiddenLayers(1);
-		Network New = new Network(c);
-		return New;
+		
+		return new Network(c);
 	}
 	/*
 	 * datasets.txt has 4 cases:
@@ -195,6 +201,7 @@ public class Tester {
 		Network Threework = this.setUpThreeNetwork();
 		Threework.run();
 		assertTrue(Arrays.equals(Threework.getOutput(), new boolean[]{true}));
+		
 		reset();
 	}
 	@Test
@@ -203,11 +210,13 @@ public class Tester {
 		Network Threework = this.setUpThreeNetwork();
 		int inputCount = 0;
 		Threework.pass();
+		
 		while(Threework.dataLeft()){
 			Threework.run();
 			assertTrue(Arrays.equals(Threework.getOutput(), new boolean[]{false}));
 			inputCount++;
 		}
+		
 		assertTrue(inputCount==3);
 		reset();
 	}
@@ -215,16 +224,20 @@ public class Tester {
 	public void testNetworkDataLeftAndOverrunCount(){
 		Network Threework = this.setUpThreeNetwork();
 		int inputCount = 0;
+		
 		while(Threework.dataLeft()){
 			Threework.pass();
 			inputCount++;
 		}
+		
 		assertTrue(inputCount==4);
 		assertTrue(Threework.getOverrunCount()==0);
+		
 		for(int i = 1; i<=4;i++){
 			Threework.run();
 			assertTrue(Threework.getOverrunCount()==i);
 		}
+		
 		reset(); 
 	}
 	

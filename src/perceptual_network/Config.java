@@ -11,20 +11,24 @@ public class Config {
 	private float[][] initial_inner_weights;
 	private float[] initial_output_weights;
 	private Data data;
+	
 	public Config(){
 		this.setNumberOfHiddenLayers(-1);
 		this.setInputLayerLength(-1);
 		this.setHiddenLayerLength(-1);
 		this.setOutputLayerLength(-1);
 	}
+	
 	public void setNumberOfHiddenLayers(int n){
 		num_hidden = n;
 	}
+	
 	public void setAllLayersLength(int l){
 		this.setInputLayerLength(l);
 		this.setHiddenLayerLength(l);
 		this.setOutputLayerLength(l);
 	}
+	
 	public void setInputLayerLength(int l){
 		input_layer_length = l;
 	}
@@ -41,28 +45,37 @@ public class Config {
 		initial_inner_weights = innerweights;
 		initial_output_weights = outputweights;
 	}
+	
 	public int getNumberOfHiddenLayers() {
 		return num_hidden;
 	}
+	
 	public int getInputLayerLength() {
 		return input_layer_length;
 	}
+	
 	public int getHiddenLayerLength() {
 		return hidden_layer_length;
 	}
+	
 	public int getOutputLayerLength() {
 		return output_layer_length;
 	}
+	
 	public float[][] getInnerWeights(){
 		return initial_inner_weights;
 	}
+	
 	public float[] getOutputWeights(){
 		return initial_output_weights;
 	}
+	
 	public Data getData() {
 		return data;
 	}
+	
 	public void setData(Data data) {
 		this.data = data;
 	}
+	
 }

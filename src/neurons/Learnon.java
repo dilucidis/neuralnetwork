@@ -21,6 +21,7 @@ public abstract class Learnon extends Neuron implements Updateable {
 		defaultWeight = n.defaultWeight;
 		learningRate = n.learningRate;
 	}
+	
 	public Learnon(Neuron[] inputs){
 		this(); //call the other constructor
 		addInputs(inputs); //finish initialization with wiring of the inputs

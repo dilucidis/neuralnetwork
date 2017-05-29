@@ -21,6 +21,7 @@ public class InnerLayer extends Layer {
 	public static int getNum(){
 		return num;
 	}
+	
 	public static void resetNum(){
 		num=0;
 	}
