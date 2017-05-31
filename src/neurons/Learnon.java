@@ -11,11 +11,11 @@ public abstract class Learnon extends Neuron implements Updateable {
 	protected double defaultWeight = 0.34; //TODO randomize initial weights
 	protected double learningRate = 0.1;
 
-	public Learnon() {
+	protected Learnon() {
 		inputs_and_weights = new HashMap<Neuron, Double>();
 	}
 
-	public Learnon(Learnon n) {
+	protected Learnon(Learnon n) {
 		super(n);
 		inputs_and_weights= new HashMap<Neuron, Double>(n.getInputsAndWeights()); //deep copy of hashmap
 		defaultWeight = n.defaultWeight;
