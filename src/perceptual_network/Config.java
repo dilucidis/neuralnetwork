@@ -1,6 +1,7 @@
 package perceptual_network;
 
 import data.Data;
+import neurons.Learnon;
 
 public class Config {
 	//"builder" class for network
@@ -11,6 +12,7 @@ public class Config {
 	private float[][] initial_inner_weights;
 	private float[] initial_output_weights;
 	private Data data;
+	private Class<? extends Learnon> learnonType;
 	
 	public Config(){
 		this.setNumberOfHiddenLayers(-1);
@@ -78,4 +80,11 @@ public class Config {
 		this.data = data;
 	}
 	
+	public void setNeuronTypes(Class<? extends Learnon> cl){
+		this.learnonType = cl;
+	}
+	
+	public Class<? extends Learnon> getNeuronType(){
+		return this.learnonType;
+	}
 }

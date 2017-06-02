@@ -1,10 +1,13 @@
 package perceptual_network;
+
+import neurons.Learnon;
+
 //Extending innerlayer is important: fully functional layer that also outputs
 public class OutputLayer extends InnerLayer {
 
 
-	public OutputLayer(int size) {
-		super(size);
+	public OutputLayer(int size, Class<? extends Learnon> cl) {
+		super(size, cl);
 	}
 	
 	public boolean[] output(){

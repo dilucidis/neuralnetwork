@@ -25,13 +25,13 @@ public class Network implements Updateable {
 			manualweights=true;
 		//init the innerlayers, and wire them with the previous layer
 		for(int i = 1;  i<=c.getNumberOfHiddenLayers(); i++){
-			layers[i] = new InnerLayer(c.getHiddenLayerLength());
+			layers[i] = new InnerLayer(c.getHiddenLayerLength(), c.getNeuronType());
 			if(manualweights)
 				((InnerLayer)layers[i]).setDefaultWeights(c.getInnerWeights()[i-1]);
 			((InnerLayer)layers[i]).wireAllAxons(layers[i-1]);
 		}
 		//init the last layer as an outputlayer
-		layers[layers.length-1] = new OutputLayer(c.getOutputLayerLength());
+		layers[layers.length-1] = new OutputLayer(c.getOutputLayerLength(), c.getNeuronType());
 		//set output layer weights
 		if(manualweights)
 			((InnerLayer)layers[layers.length-1]).setDefaultWeights(c.getOutputWeights());

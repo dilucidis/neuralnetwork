@@ -1,6 +1,9 @@
 package perceptual_network;
 
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import neurons.*;
 
 public class InnerLayer extends Layer {
@@ -10,11 +13,19 @@ public class InnerLayer extends Layer {
 		super();
 		num++;
 	}
-	
-	public InnerLayer(int size) {
+	//sigh watch this
+	public InnerLayer(int size, Class<? extends Learnon> cl) {
 		super(size);
-		for(int i = 0; i<size; i++)
-			bank[i] = new Perceptron();
+		try{
+			Constructor<? extends Learnon> ctor = cl.getConstructor();
+			for(int i = 0; i<size; i++)
+				bank[i] = ctor.newInstance();
+		}catch(NoSuchMethodException  | InvocationTargetException |
+			   IllegalAccessException | InstantiationException e){
+			e.printStackTrace();
+			throw new RuntimeException("used wrong type for innerlayer");
+			
+		}
 		num++;
 	}
 	

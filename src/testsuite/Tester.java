@@ -125,10 +125,10 @@ public class Tester {
 		InnerLayer[] layers = new InnerLayer[2];
 		Perceptron alwaysOn = new Perceptron();
 		alwaysOn.fire(true);
-		layers[0] = new InnerLayer(1);
+		layers[0] = new InnerLayer(1, Perceptron.class);
 		layers[0].setNeurons(new Perceptron[]{alwaysOn});
 		assertTrue(Arrays.equals(layers[0].checkfire(), new float[]{1.0f}));
-		layers[1] = new InnerLayer(1);
+		layers[1] = new InnerLayer(1, Perceptron.class);
 		((Perceptron) layers[1].grabAxon(0)).setDefaultWeight(2.0);
 		layers[1].wireAllAxons(layers[0]);
 		assertTrue(Arrays.equals(layers[1].checkfire(), new float[]{0.0f}));
@@ -138,18 +138,22 @@ public class Tester {
 	}
 	@Test
 	public void testOutputLayer(){
-		OutputLayer olay = new OutputLayer(1);
+		OutputLayer olay = new OutputLayer(1, Perceptron.class);
 		Perceptron alwaysOn = new Perceptron();
 		alwaysOn.fire(true);
-		olay.setNeuron(alwaysOn, 0);
+		olay.setNeuron(0, alwaysOn);
 		assertTrue(Arrays.equals(olay.output(), new boolean[]{true}));
 		
 	}
 	@Test
 	public void testNetwork1(){
+		//start off the config
 		Config c = new Config();
-		//simple network
+		//use perceptrons for the inner layers
+		c.setNeuronTypes(Perceptron.class);
+		//set the layer lengths to 1
 		c.setAllLayersLength(1);
+		//make it a 102 layer network
 		c.setNumberOfHiddenLayers(100);
 		//this is sort of a cumbersome structure, kind of unfortunate
 		//but at the same time, more likely to have a few large layers
@@ -175,7 +179,7 @@ public class Tester {
 	private Network setUpThreeNetwork(){
 		Data newData = new Data(new File(Tester.path));
 		Config c = new Config();
-		
+		c.setNeuronTypes(Perceptron.class);
 		c.setData(newData);
 		c.setAllLayersLength(3);
 		//overriding the previously set length of 3 for the output

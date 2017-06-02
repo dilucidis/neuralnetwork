@@ -28,7 +28,7 @@ public abstract class Layer implements Updateable{
 			n.update();
 	}
 	
-	public Neuron setNeuron(Neuron n, int x){
+	public Neuron setNeuron(int x, Neuron n){
 		Neuron old = bank[x];
 		bank[x] = n;
 		return old;
