@@ -22,7 +22,8 @@ public class InnerLayer extends Layer {
 				bank[i] = ctor.newInstance();
 		}catch(NoSuchMethodException  | InvocationTargetException |
 			   IllegalAccessException | InstantiationException e){
-			e.printStackTrace();
+			//e.printStackTrace();  for debugging purposes, uncomment this
+			//if the below line is causing exceptions
 			throw new RuntimeException("used wrong type for innerlayer");
 			
 		}
