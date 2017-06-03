@@ -19,16 +19,16 @@ public class Tester {
 	/**
 	 * @param args
 	 */
-	static String path;
+	static String ANDpath;
 	
 	@Before
 	public void setUp(){
-		setPath();
+		setANDPath();
 		reset();
 	}
 	
-	public void setPath(){
-		Tester.path = "/Users/sparr/workspace/neuralnetwork/src/data/datasets.txt";
+	public void setANDPath(){
+		Tester.ANDpath = "/Users/sparr/workspace/neuralnetwork/src/data/ANDdataset.txt";
 	}
 	
 	public void reset(){
@@ -60,7 +60,7 @@ public class Tester {
 	}
 	@Test
 	public void testData(){
-		Data test = new Data(new File(Tester.path));
+		Data test = new Data(new File(Tester.ANDpath));
 		assertTrue(test.currentCaseNumber==0);
 		assertTrue(test.casesLeft()==4);
 		IO io = test.nextDataSet();
@@ -146,7 +146,7 @@ public class Tester {
 		
 	}
 	@Test
-	public void testNetwork1(){
+	public void testPerceptronNetwork1(){
 		//start off the config
 		Config c = new Config();
 		//use perceptrons for the inner layers
@@ -176,8 +176,8 @@ public class Tester {
 		assertTrue(Arrays.equals(line.getOutput(), singleTrue));
 	}
 	
-	private Network setUpThreeNetwork(){
-		Data newData = new Data(new File(Tester.path));
+	private Network setUpANDNetwork(){
+		Data newData = new Data(new File(Tester.ANDpath));
 		Config c = new Config();
 		c.setNeuronTypes(Perceptron.class);
 		c.setData(newData);
@@ -189,35 +189,34 @@ public class Tester {
 		return new Network(c);
 	}
 	/*
-	 * datasets.txt has 4 cases:
+	 * ANDdataset.txt has 4 cases:
 	 * 111 : 1
 	 * 110 : 0
 	 * 101 : 0
 	 * 100 : 0
-	 * Basically, the latter two inputs are binary, and the first input is alwaysON
-	 * for training purposes
-	 * The dataset is checking if the network can fire for 3
-	 * and stay silent for the rest
+	 * The dataset is checking if the network can fire for
+	 * the AND of the latter two values
+	 * the first value is a bias input
 	 */
 	@Test
-	//the first case is three: so threenwork should give true
-	public void testNetwork2(){
-		Network Threework = this.setUpThreeNetwork();
-		Threework.run();
-		assertTrue(Arrays.equals(Threework.getOutput(), new boolean[]{true}));
+	//the first case is 11: so ANDwork should give true
+	public void testPerceptronNetwork2(){
+		Network ANDwork = this.setUpANDNetwork();
+		ANDwork.run();
+		assertTrue(Arrays.equals(ANDwork.getOutput(), new boolean[]{true}));
 		
 		reset();
 	}
 	@Test
-	//the rest of the cases aren't three, so it should give false
-	public void testNetwork3(){
-		Network Threework = this.setUpThreeNetwork();
+	//the rest of the cases aren't 11, so it should give false
+	public void testPerceptronNetwork3(){
+		Network ANDwork = this.setUpANDNetwork();
 		int inputCount = 0;
-		Threework.pass();
+		ANDwork.pass();
 		
-		while(Threework.dataLeft()){
-			Threework.run();
-			assertTrue(Arrays.equals(Threework.getOutput(), new boolean[]{false}));
+		while(ANDwork.dataLeft()){
+			ANDwork.run();
+			assertTrue(Arrays.equals(ANDwork.getOutput(), new boolean[]{false}));
 			inputCount++;
 		}
 		
@@ -226,23 +225,38 @@ public class Tester {
 	}
 	@Test
 	public void testNetworkDataLeftAndOverrunCount(){
-		Network Threework = this.setUpThreeNetwork();
+		Network ANDwork = this.setUpANDNetwork();
 		int inputCount = 0;
 		
-		while(Threework.dataLeft()){
-			Threework.pass();
+		while(ANDwork.dataLeft()){
+			ANDwork.pass();
 			inputCount++;
 		}
 		
 		assertTrue(inputCount==4);
-		assertTrue(Threework.getOverrunCount()==0);
+		assertTrue(ANDwork.getOverrunCount()==0);
 		
 		for(int i = 1; i<=4;i++){
-			Threework.run();
-			assertTrue(Threework.getOverrunCount()==i);
+			ANDwork.run();
+			assertTrue(ANDwork.getOverrunCount()==i);
 		}
 		
 		reset(); 
+	}
+	@Test
+	public void testInnerLayerConstructorTypeException(){
+		String exceptionMessage = "";
+		Config c = new Config();
+		c.setAllLayersLength(1);
+		
+		c.setNumberOfHiddenLayers(0);
+		c.setNeuronTypes(Teston.class);
+		try{
+			Network n = new Network(c);
+		}catch(Exception e){
+			exceptionMessage = e.getMessage();
+		}
+		assertTrue(exceptionMessage.equals("used wrong type for innerlayer"));
 	}
 	
 }
