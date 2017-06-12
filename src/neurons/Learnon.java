@@ -52,6 +52,9 @@ public abstract class Learnon extends Neuron implements Updateable {
 			addInput(n);
 	}
 	
+	public void addInputsAndCustomWeights(HashMap<Neuron, Double> inputsAndWeights){
+		this.inputs_and_weights.putAll(inputsAndWeights);
+	}
 	public HashMap<Neuron, Double> getInputsAndWeights(){
 		return inputs_and_weights;
 	}

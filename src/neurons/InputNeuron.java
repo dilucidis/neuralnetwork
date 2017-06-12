@@ -11,7 +11,7 @@ public class InputNeuron extends Neuron{
 		num++;
 	}
 
-	//use this method to feed IO inputs into the network
+	//use this method to feed ANY KIND OF INPUT INTO NETWORK
 	public void readValue(float input){
 		lastReadValue = input;
 	}

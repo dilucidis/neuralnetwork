@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import data.Data;
 import io.IO;
@@ -19,16 +20,12 @@ public class Tester {
 	/**
 	 * @param args
 	 */
-	static String ANDpath;
-	
+	static final String path = "/Users/sparr/workspace/neuralnetwork/src/data/";
+	static final String ANDpath = path + "ANDdataset.txt";
+	static final String XORpath = path + "XORdataset.txt";
 	@Before
 	public void setUp(){
-		setANDPath();
 		reset();
-	}
-	
-	public void setANDPath(){
-		Tester.ANDpath = "/Users/sparr/workspace/neuralnetwork/src/data/ANDdataset.txt";
 	}
 	
 	public void reset(){
@@ -175,6 +172,37 @@ public class Tester {
 		
 		assertTrue(Arrays.equals(line.getOutput(), singleTrue));
 	}
+	//hand built 1-hiddenlayer perceptron network to solve the infamous
+	//XOR problem
+	private Network setUpXORNetwork(){
+		Network n;
+		Config c = new Config();
+		Data d = new Data(new File(Tester.XORpath));
+		c.setInputLayerLength(3);
+		c.setHiddenLayerLength(2);
+		c.setOutputLayerLength(1);
+		c.setNumberOfHiddenLayers(1);
+		c.setNeuronTypes(Perceptron.class);
+		c.setData(d);
+		n = new Network(c);
+		HashMap<Neuron, Double> newWeights = new HashMap<>();
+		newWeights.put(n.getNeuron(0, 1), .75);
+		newWeights.put(n.getNeuron(0, 2), .75);
+		newWeights.put(n.getNeuron(0, 0), 0.);
+		n.setSingleLearnonCustomWeights(1, 0, newWeights);
+		((Perceptron)n.getNeuron(1, 0)).setBias(-.5f);
+		newWeights = new HashMap<>();
+		newWeights.put(n.getNeuron(0, 1), -.75);
+		newWeights.put(n.getNeuron(0, 2), -.75);
+		newWeights.put(n.getNeuron(0, 0), 0.);
+		n.setSingleLearnonCustomWeights(1,1, newWeights);
+		((Perceptron)n.getNeuron(1, 1)).setBias(1f);
+		newWeights = new HashMap<>();
+		newWeights.put(n.getNeuron(1, 0), .75);
+		newWeights.put(n.getNeuron(1, 1), .75);
+		n.setSingleLearnonCustomWeights(2,0, newWeights);
+		return n;
+	}
 	
 	private Network setUpANDNetwork(){
 		Data newData = new Data(new File(Tester.ANDpath));
@@ -222,6 +250,19 @@ public class Tester {
 		
 		assertTrue(inputCount==3);
 		reset();
+	}
+	@Test
+	//testing XOR this time
+	public void testPerceptronNetwork4(){
+		Network XORwork = setUpXORNetwork();
+		boolean[] results = new boolean[4];
+		int testnum = 0;
+		while(XORwork.dataLeft()){
+			XORwork.run();
+			results[testnum] = XORwork.getOutput(0);
+			testnum++;
+		}
+		assertTrue(Arrays.equals(results, new boolean[]{false, true, true, false}));
 	}
 	@Test
 	public void testNetworkDataLeftAndOverrunCount(){

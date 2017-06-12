@@ -1,10 +1,13 @@
 package perceptual_network;
 
 
+import java.util.HashMap;
+
 import data.Data;
 
 import interfaces.Updateable;
 import io.IO;
+import neurons.Neuron;
 
 public class Network implements Updateable {
 	private IO io;
@@ -42,7 +45,6 @@ public class Network implements Updateable {
 			this.data = c.getData();
 	}
 
-	
 	public void update() {
 		//check if IO has been fed manually, else read from dataset
 		if(!freshIO)
@@ -59,6 +61,18 @@ public class Network implements Updateable {
 		this.out = ((OutputLayer)layers[layers.length-1]).output();
 		//mark the current IO as used
 		freshIO = false;
+	}
+	
+	public Neuron getNeuron(int layernum, int numInLayer){
+		return this.layers[layernum].grabAxon(numInLayer);
+	}
+	
+	public void setSingleLearnonCustomWeights(int layernum, int num, 
+								HashMap<Neuron, Double> newWeights){
+		if(layernum==0)
+			throw new RuntimeException("Cannot set custom input layer weights,"
+									 + " as there are no input layer weights to set.");
+		((InnerLayer)this.layers[layernum]).setSingleLearnonCustomWeights(num, newWeights);
 	}
 	//for use internally changing out io, but also for dataless testing
 	public IO setInput(IO in){
