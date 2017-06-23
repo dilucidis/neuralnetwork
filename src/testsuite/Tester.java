@@ -298,6 +298,7 @@ public class Tester {
 			exceptionMessage = e.getMessage();
 		}
 		assertTrue(exceptionMessage.equals("used wrong type for innerlayer"));
+		reset();
 	}
 	@Test
 	public void testRandomPerceptrons(){
@@ -324,7 +325,26 @@ public class Tester {
 		}
 		
 		assertTrue(differentOutcomes!=trials&&differentOutcomes!=0);
+		reset();
 		
+	}
+	@Test
+	public void testSquaredCostFunction(){
+	boolean[] singleFalse = new boolean[]{false};
+	boolean[] singleTrue = new boolean[]{true};
+	boolean[] someOutput = new boolean[]{true, false, true, true, false};
+	boolean[] someAnswer = new boolean[]{false, false, true, false, true};
+	//(0-2)^2/2 = 2
+		float output = Network.quadraticCostFunction(singleFalse,
+													 singleTrue, 1);
+		assertTrue(output<2.1f&&output>1.9f);
+	//(2-0)^2/2 = 2
+		output = Network.quadraticCostFunction(singleTrue, singleFalse, 1);
+		assertTrue(output<2.1f&&output>1.9f);
+	//(4+0+0+4+4)/2 = 6
+		output = Network.quadraticCostFunction(someOutput, someAnswer, 1);
+		assertTrue(output<6.1f&&output>5.9f);
+	
 	}
 	
 }

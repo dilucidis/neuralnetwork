@@ -17,6 +17,33 @@ public class Network implements Updateable {
 	private int overrunCount = 0;
 	private Layer[] layers;
 	
+	public static float quadraticCostFunction(float[] output, float[] desire, int numTrainingInputs){
+		if(output.length!=desire.length)
+			throw new RuntimeException("Network/Data output length mismatch");
+		int costSum = 0;
+		for(int i = 0; i < output.length; i++){
+			costSum += Math.pow((output[i]-desire[i]), 2);
+		}
+		return (float)(costSum/(2f*numTrainingInputs));
+	}
+	public static float quadraticCostFunction(boolean[] output, boolean[] desire, int numTrainingInputs){
+		if(output.length!=desire.length)
+			throw new RuntimeException("Network/Data output length mismatch");
+		float[] foutput = new float[output.length];
+		float[] fdesire = new float[desire.length];
+		for(int i = 0; i < output.length;i++){
+			if(output[i])
+				foutput[i]=2f;
+			else
+				foutput[i]=0f;
+			if(desire[i])
+				fdesire[i]=2f;
+			else
+				fdesire[i]=0f;
+		}
+		
+		return quadraticCostFunction(foutput, fdesire, numTrainingInputs);
+	}
 	public Network(Config c){
 		//takes in a config file
 		//the layers of the network: input + nh*hidden + output
