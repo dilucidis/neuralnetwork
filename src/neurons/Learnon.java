@@ -2,6 +2,7 @@ package neurons;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import interfaces.Updateable;
 
@@ -10,9 +11,12 @@ public abstract class Learnon extends Neuron implements Updateable {
 	HashMap<Neuron, Double> inputs_and_weights; //the neuronal input and the weight values 
 	protected double defaultWeight = 0.34; //TODO randomize initial weights
 	protected double learningRate = 0.1;
-
+	protected Random rand;
+	protected long seed;
+	protected boolean isRandom;
 	protected Learnon() {
 		inputs_and_weights = new HashMap<Neuron, Double>();
+		rand = new Random();
 	}
 
 	protected Learnon(Learnon n) {
@@ -20,6 +24,12 @@ public abstract class Learnon extends Neuron implements Updateable {
 		inputs_and_weights= new HashMap<Neuron, Double>(n.getInputsAndWeights()); //deep copy of hashmap
 		defaultWeight = n.defaultWeight;
 		learningRate = n.learningRate;
+		isRandom = n.isRandom;
+		if(isRandom){
+			seed = n.seed;
+		//this random is only guaranteed identity with the other if it hasn't been used yet
+			rand = new Random(seed);
+		}
 	}
 	
 	public Learnon(Neuron[] inputs){
@@ -44,7 +54,8 @@ public abstract class Learnon extends Neuron implements Updateable {
 
 	//crucially, addInput does not deep copy I; when I updates, inputs will as well
 	public void addInput(Neuron I) {
-		inputs_and_weights.put(I, defaultWeight);
+		Double weight = this.isRandom ? randomWeight() : defaultWeight;
+		this.inputs_and_weights.put(I, weight);
 	}
 	
 	public void addInputs(Neuron[] I){
@@ -55,10 +66,23 @@ public abstract class Learnon extends Neuron implements Updateable {
 	public void addInputsAndCustomWeights(HashMap<Neuron, Double> inputsAndWeights){
 		this.inputs_and_weights.putAll(inputsAndWeights);
 	}
+	
 	public HashMap<Neuron, Double> getInputsAndWeights(){
 		return inputs_and_weights;
 	}
-
+	
+	public void setRandom(boolean isRandom){
+		this.isRandom = isRandom;
+	}
+	
+	public void setRandomSeed(long seed){
+		rand.setSeed(seed);
+	}
+	
+	protected double randomWeight(){
+		return rand.nextDouble();
+	}
+	
 	public double getDefaultWeight(){
 		return defaultWeight;
 	}

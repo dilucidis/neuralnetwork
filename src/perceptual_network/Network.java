@@ -22,29 +22,49 @@ public class Network implements Updateable {
 		//the layers of the network: input + nh*hidden + output
 		this.layers = new Layer[c.getNumberOfHiddenLayers()+2]; 
 		//init the inputlayer
-		layers[0] = new InputLayer(c.getInputLayerLength());
-		boolean manualweights = false;
-		if(c.getInnerWeights()!=null&&c.getOutputWeights()!=null)
-			manualweights=true;
-		//init the innerlayers, and wire them with the previous layer
-		for(int i = 1;  i<=c.getNumberOfHiddenLayers(); i++){
-			layers[i] = new InnerLayer(c.getHiddenLayerLength(), c.getNeuronType());
-			if(manualweights)
-				((InnerLayer)layers[i]).setDefaultWeights(c.getInnerWeights()[i-1]);
-			((InnerLayer)layers[i]).wireAllAxons(layers[i-1]);
-		}
+		configureInputLayer(c);
+		//init the innerlayers
+		configureInnerLayers(c);
 		//init the last layer as an outputlayer
-		layers[layers.length-1] = new OutputLayer(c.getOutputLayerLength(), c.getNeuronType());
-		//set output layer weights
-		if(manualweights)
-			((InnerLayer)layers[layers.length-1]).setDefaultWeights(c.getOutputWeights());
-		//wire it with the previous layer
-		((OutputLayer)layers[layers.length-1]).wireAllAxons(layers[layers.length-2]);
+		configureOuterLayer(c);
 		//if the config includes a data file, read it in
 		if(c.getData()!=null)
 			this.data = c.getData();
 	}
+	
+	private void configureInputLayer(Config c){
+		layers[0] = new InputLayer(c.getInputLayerLength());
+	}
+	
+	private void configureInnerLayers(Config c){
+		boolean manualweights = false;
+		if(c.getInnerWeights()!=null)
+			manualweights=true;
+		for(int i = 1;  i<=c.getNumberOfHiddenLayers(); i++){
+			layers[i] = new InnerLayer(c.getHiddenLayerLength(), c.getNeuronType());
+			if(manualweights)
+				((InnerLayer)layers[i]).setDefaultWeights(c.getInnerWeights()[i-1]);
+			else if(c.isRandomweights())
+				((InnerLayer)layers[i]).setAllRandom();
+			((InnerLayer)layers[i]).wireAllAxons(layers[i-1]);
+		}
+	}
 
+	private void configureOuterLayer(Config c){
+		boolean manualWeights = false;
+		if(c.getOutputWeights()!=null)
+			manualWeights = true;
+		layers[layers.length-1] = new OutputLayer(c.getOutputLayerLength(), c.getNeuronType());
+		//set output layer weights if manual or random (otherwise uses some defaults)
+		if(manualWeights)
+			((InnerLayer)layers[layers.length-1]).setDefaultWeights(c.getOutputWeights());
+		else if(c.isRandomweights())
+			((InnerLayer)layers[layers.length-1]).setAllRandom();
+		//wire it with the previous layer
+		((OutputLayer)layers[layers.length-1]).wireAllAxons(layers[layers.length-2]);
+
+	}
+	
 	public void update() {
 		//check if IO has been fed manually, else read from dataset
 		if(!freshIO)

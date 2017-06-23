@@ -299,5 +299,33 @@ public class Tester {
 		}
 		assertTrue(exceptionMessage.equals("used wrong type for innerlayer"));
 	}
+	@Test
+	public void testRandomPerceptrons(){
+		InputNeuron v1 = new InputNeuron();
+		InputNeuron v2 = new InputNeuron();
+		Neuron[] inputs = new Neuron[]{v1, v2};
+		v1.readValue(true);
+		v2.readValue(true);
+		int differentOutcomes = 0;
+		int trials = 1000000;
+		v1.update();v2.update();
+		for(long x = 0; x < trials ; x++){
+			Learnon l = new Perceptron();
+			l.setRandom(true);
+			l.setRandomSeed(x);
+			Learnon l2 = new Perceptron();
+			l2.setRandom(true);
+			l2.setRandomSeed(x);
+			l.addInputs(inputs);
+			l2.addInputs(inputs);
+			l.update();l2.update();
+			assertTrue(l.checkFire()==l2.checkFire());
+			differentOutcomes+=l.checkFire();
+		}
+		
+		System.out.println(differentOutcomes);
+		assertTrue(differentOutcomes!=trials&&differentOutcomes!=0);
+		
+	}
 	
 }

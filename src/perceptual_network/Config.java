@@ -13,12 +13,14 @@ public class Config {
 	private float[] initial_output_weights;
 	private Data data;
 	private Class<? extends Learnon> learnonType;
+	private boolean randomweights;
 	
 	public Config(){
 		this.setNumberOfHiddenLayers(-1);
 		this.setInputLayerLength(-1);
 		this.setHiddenLayerLength(-1);
 		this.setOutputLayerLength(-1);
+		this.setRandomweights(false);
 	}
 	
 	public void setNumberOfHiddenLayers(int n){
@@ -86,5 +88,13 @@ public class Config {
 	
 	public Class<? extends Learnon> getNeuronType(){
 		return this.learnonType;
+	}
+
+	public boolean isRandomweights() {
+		return randomweights;
+	}
+
+	public void setRandomweights(boolean randomweights) {
+		this.randomweights = randomweights;
 	}
 }

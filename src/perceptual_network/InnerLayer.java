@@ -55,12 +55,14 @@ public class InnerLayer extends Layer {
 			this.wireAxons(l, i);
 		}
 	}
-	
+	public void setAllRandom(){
+		for(int i = 0; i < bank.length; i++)
+			bank[i].setRandom(true);
+	}
 	public void setDefaultWeights(float[] weights){
 		for(int i = 0; i < weights.length; i++)
 			bank[i].setDefaultWeight(weights[i]);
 	}
-	
 	public void setSingleLearnonCustomWeights(int index, HashMap<Neuron, Double> newWeights){
 		bank[index].addInputsAndCustomWeights(newWeights);
 	}
