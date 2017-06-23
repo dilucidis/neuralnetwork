@@ -307,7 +307,7 @@ public class Tester {
 		v1.readValue(true);
 		v2.readValue(true);
 		int differentOutcomes = 0;
-		int trials = 1000000;
+		int trials = 10000;
 		v1.update();v2.update();
 		for(long x = 0; x < trials ; x++){
 			Learnon l = new Perceptron();
@@ -323,7 +323,6 @@ public class Tester {
 			differentOutcomes+=l.checkFire();
 		}
 		
-		System.out.println(differentOutcomes);
 		assertTrue(differentOutcomes!=trials&&differentOutcomes!=0);
 		
 	}
