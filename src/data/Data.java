@@ -19,7 +19,7 @@ public class Data {
 		int numOfCases = sc.nextInt();
 		cases = new IO[numOfCases];
 		for(int i = 0; i<cases.length;i++){
-			cases[i] = new IO(parseLine(sc.next()),1);
+			cases[i] = new IO(parseLine(sc.next()),2);
 			cases[i].setOutput(parseLine(sc.next()));
 		}
 			
