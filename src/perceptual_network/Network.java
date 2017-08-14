@@ -2,31 +2,48 @@ package perceptual_network;
 
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import data.Data;
 
 import interfaces.Updateable;
+import io.FIO;
 import io.IO;
+import neurons.Learnon;
 import neurons.Neuron;
 
 public class Network implements Updateable {
 	private IO io;
 	private boolean freshIO;
 	private boolean[] out;
+	private float[] fout;
 	private Data data;
 	private int overrunCount = 0;
 	private Layer[] layers;
+	private Map<IO, IO> currentBatch;
+	private boolean training = false;
 	
-	public static float quadraticCostFunction(float[] output, float[] desire, int numTrainingInputs){
+	public static float batchQuadraticCostFunction(Map<IO, IO> batch){
+		float total = 0;
+		int outputCount = 0;
+		for(Entry<IO, IO> e : batch.entrySet()){
+			outputCount++;
+			total+=quadraticCostFunction(e.getKey().getOutput(), e.getValue().getOutput());
+		}
+		return (total/(float)outputCount);
+	}
+	public static float quadraticCostFunction(float[] output, float[] desire){
 		if(output.length!=desire.length)
 			throw new RuntimeException("Network/Data output length mismatch");
-		int costSum = 0;
+		float costSum = 0;
 		for(int i = 0; i < output.length; i++){
 			costSum += Math.pow((output[i]-desire[i]), 2);
 		}
-		return (float)(costSum/(2f*numTrainingInputs));
+		return (float)(costSum/2f);
 	}
-	public static float quadraticCostFunction(boolean[] output, boolean[] desire, int numTrainingInputs){
+	
+	public static float quadraticCostFunction(boolean[] output, boolean[] desire){
 		if(output.length!=desire.length)
 			throw new RuntimeException("Network/Data output length mismatch");
 		float[] foutput = new float[output.length];
@@ -42,8 +59,9 @@ public class Network implements Updateable {
 				fdesire[i]=0f;
 		}
 		
-		return quadraticCostFunction(foutput, fdesire, numTrainingInputs);
+		return quadraticCostFunction(foutput, fdesire);
 	}
+	
 	public Network(Config c){
 		//takes in a config file
 		//the layers of the network: input + nh*hidden + output
@@ -106,10 +124,38 @@ public class Network implements Updateable {
 			l.update();
 		//read the output to out
 		this.out = ((OutputLayer)layers[layers.length-1]).output();
+		this.fout = ((OutputLayer)layers[layers.length-1]).fout();
 		//mark the current IO as used
 		freshIO = false;
 	}
-	
+	public void learn(){
+		FIO fio = new FIO(this.io);
+		((OutputLayer)layers[layers.length-1]).learn(fio.getOutput());
+		for(int i = layers.length-2; i >0; i--)
+			((InnerLayer)layers[i]).learn(layers[i+1]);
+	}
+	public void dumpWeights(){
+		for(int i =1; i < this.layers.length;i++){
+			System.out.println("Hidden layer no. "+i+"-------------------------");
+			System.out.println("------------------------------------------");
+			for(int x = 0; x < this.layers[i].length();x++){
+				System.out.println("Neuron #"+(x+1)+" ~~~~~~~~~~~~");
+				int weightCount = 0;
+				for(double d: ((Learnon)this.layers[i].grabAxon(x)).getInputsAndWeights().values()){
+					System.out.println("~~~~~~");
+					weightCount++;
+					System.out.println("~~~prev layer neuron #"+weightCount);
+					System.out.println("~~~value: " +d);
+				}
+				System.out.println("~~~~~~");
+			}
+		}
+		
+	}
+	public float getCurrentCost(){
+		FIO fio = new FIO(this.io);
+		return Network.quadraticCostFunction(this.fout, fio.getOutput());
+	}
 	public Neuron getNeuron(int layernum, int numInLayer){
 		return this.layers[layernum].grabAxon(numInLayer);
 	}
@@ -135,7 +181,12 @@ public class Network implements Updateable {
 		//new data, so be be sure to read it
 		freshIO = false;
 	}
-	
+	public void toggleTraining(boolean train){
+		this.training = train;
+	}
+	public boolean isTraining(){
+		return this.training;
+	}
 	public boolean getInput(int x){
 		return io.getInputValue(x);
 	}
@@ -151,12 +202,17 @@ public class Network implements Updateable {
 	public boolean[] getOutput(){
 		return this.out;
 	}
+	public float[] getFOut(){
+		return this.fout;
+	}
 	
 	public void run(){
 		//actually run the network, but only if there is real data to work with
-		if(freshIO||dataLeft())
+		if(freshIO||dataLeft()){
 			this.update();
-		else 
+			if(this.training)
+				this.learn();
+		}else 
 			overrunCount++;
 		//after each this.update() call, this.out should be updated
 	}

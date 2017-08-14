@@ -5,11 +5,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import interfaces.Learnable;
 import neurons.*;
 
 public class InnerLayer extends Layer {
 	private static int num = 0;
 	protected Learnon[] bank;
+	
 	public InnerLayer(){
 		super();
 		num++;
@@ -34,6 +36,7 @@ public class InnerLayer extends Layer {
 		num++;
 	}
 	
+	
 	public static int getNum(){
 		return num;
 	}
@@ -55,16 +58,25 @@ public class InnerLayer extends Layer {
 			this.wireAxons(l, i);
 		}
 	}
+	
 	public void setAllRandom(){
 		for(int i = 0; i < bank.length; i++)
 			bank[i].setRandom(true);
 	}
+	
 	public void setDefaultWeights(float[] weights){
 		for(int i = 0; i < weights.length; i++)
 			bank[i].setDefaultWeight(weights[i]);
 	}
+	
 	public void setSingleLearnonCustomWeights(int index, HashMap<Neuron, Double> newWeights){
 		bank[index].addInputsAndCustomWeights(newWeights);
 	}
+
+	public void learn(Layer nextLayer) {
+		for(Learnon n : this.bank)
+			n.learnAsInnerNeuron(nextLayer);
+	}
+
 
 }
