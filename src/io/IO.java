@@ -1,7 +1,7 @@
 package io;
 
 public class IO {
-	//TODO consider replacing boolean arrays with something more compact
+	//TODO consider replacing boolean arrays with floats
 	private boolean[] input;
 	private boolean[] output;
 	private boolean outputGiven = false;
@@ -49,5 +49,8 @@ public class IO {
 			return this.output[y];
 		else
 			throw new RuntimeException("no output given");
+	}
+	public boolean[] getOutput(){
+		return output;
 	}
 }
